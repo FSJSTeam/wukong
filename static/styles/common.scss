@@ -1,0 +1,56 @@
+$headerHeight: 110px;
+$footerHeight: 100px;
+
+/* Font Size Setting */
+$fontSizeSmall: 12px;
+$fontSizeMedium: 14px;
+$fontSizeBig: 16px;
+$fontSize18: 18px;
+$fontSize20: 20px;
+$fontSize22: 22px;
+$fontSizeLarger: 24px;
+
+/* Font Color Setting */
+$fontColorWhite: #fff;
+$fontColorBlack: #373d41;
+
+/* Font textAlign Setting */
+$textAlignLeft: left;
+$textAlignCenter: center;
+$textAlignRight: right;
+
+/* Background Color Setting */
+$orangeBackground: #fe2c23;
+$whiteBackground: #fff;
+
+* {
+  // margin: 0;
+  // padding: 0;
+}
+html{
+	font-size: 14px ;
+}
+
+@media screen and (max-width: 1366px){
+	html{
+		font-size: 14px ;
+	}
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wk-main {
+  width: 100%;
+  // margin-top: $headerHeight;
+  // margin-bottom: $footerHeight;
+  padding-top:$headerHeight;
+  padding-bottom: $footerHeight + 40;
+  
+}
+.mt20 {
+  margin-top: 20px;
+}
