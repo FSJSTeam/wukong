@@ -15,7 +15,7 @@
     	<div class="login-form">
     		<el-form ref="form" :model="form">
 			  <el-form-item label="用户名">
-			    <el-input v-model="form.name"></el-input>
+			    <el-input v-model="form.username"></el-input>
 			  </el-form-item>
 			  <el-form-item label="密码">
 			    <el-input type="password" v-model="form.password"></el-input>
@@ -37,14 +37,19 @@ export default {
   data() {
       return {
         form: {
-          name: '请输入邮箱',
-          password: '请输入密码'
+          username: '',
+          password: ''
         }
       }
     },
     methods: {
       onSubmit() {
         console.log('submit!');
+				var data = this.form
+				data.cmd = 'login'
+				this.$ajax.post('/api', {msg: data }).then(res => {
+					console.log(res)
+				})
       }
     }
 }

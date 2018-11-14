@@ -32,7 +32,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         from: /.*/,
         to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
       }]
-    },
+    },    
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
@@ -49,7 +49,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll
     }
-  },
+  },  
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
