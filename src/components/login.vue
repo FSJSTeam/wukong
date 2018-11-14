@@ -47,7 +47,7 @@ export default {
         console.log('submit!');
 				var data = this.form
 				data.cmd = 'login'
-				this.$ajax.post('/api', {msg: data }).then(res => {
+				this.$ajax.post('/index.php', "msg="+JSON.stringify(data) ).then(res => {
 					console.log(res)
 				})
       }

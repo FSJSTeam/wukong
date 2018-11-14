@@ -10,12 +10,13 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const service = axios.create({
-  baseURL: '',           // api的base_url
+  baseURL: '/list',           // api的base_url
   timeout: 60000, // 请求超时时间
   headers: {
-    // 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+    // 'Content-Type': 'application/json;charset=utf-8'
   },
-  transformRequest: data => qs.stringify(data)
+  // transformRequest: data => qs.stringify(data)
  })
  Vue.prototype.$ajax = service
 /* eslint-disable no-new */
