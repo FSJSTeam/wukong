@@ -9,8 +9,8 @@ Vue.use(ElementUI);
 Vue.use(VueCookies)
 Vue.config.productionTip = false;
 
-var ENV = 'dev'
-var baseUrl = ENV == 'dev' ? '/api' : 'http://39.98.66.212/index.php/'
+const ENV = process.env.NODE_ENV
+var baseUrl = ENV == 'development' ? '/api' : 'http://39.98.66.212/index.php/'
 const service = axios.create({
   baseURL: baseUrl,           // api的base_url
   timeout: 60000, // 请求超时时间

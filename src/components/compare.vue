@@ -9,11 +9,11 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column sortable prop="run_id" label="run_id"></el-table-column>
           <el-table-column sortable prop="name" label="name"></el-table-column>
-          <el-table-column sortable prop="real_bug_num" label="real_bug_num"></el-table-column>
-          <el-table-column sortable prop="unknown_bug_num" label="unknown_bug_num"></el-table-column>
-          <el-table-column sortable prop="fp_bug_num" label="fp_bug_num"></el-table-column>
+          <el-table-column prop="real_bug_num" label="real_bug_num"></el-table-column>
+          <el-table-column prop="unknown_bug_num" label="unknown_bug_num"></el-table-column>
+          <el-table-column prop="fp_bug_num" label="fp_bug_num"></el-table-column>
           <el-table-column sortable prop="date" label="date"></el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column label="操作" width="90">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleDetail(scope.$index, scope.row)">查看</el-button>
             </template>

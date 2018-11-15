@@ -91,10 +91,6 @@ html{
 	color: #cc0000 ;
 }
 
-.el-button:hover{
-	background : #fe3f32 ;
-}
-
 .el-input__inner{
 	color: #cc0000 ;
 	text-align: center;
@@ -111,7 +107,7 @@ html{
 	border: 1px solid #ff924b ;
 }
 
-.el-button{
+.login-form .el-button{
 	width: 100% ;
 	height: 4rem ;
 	margin-top: 1.5rem;
@@ -119,15 +115,18 @@ html{
 	padding: 0px ;
 	border: none ;
 	border-radius: 6px;
+	&:hover {
+		background : #fe3f32
+	}
 }
 
 .el-button+.el-button{
 	margin-left: 0px ;
 }
 
-.el-button,
-.el-button:active,
-.el-button:focus{
+.login-form .el-button,
+.login-form .el-button:active,
+.login-form .el-button:focus{
 	background: $orangeBackground ;
 }
 
@@ -162,7 +161,7 @@ html{
 	}
 
 	.el-alert,
-	.el-button{
+	.login-form .el-button{
 		height: 3rem ;
 		line-height: 3rem ;
 	}
@@ -194,7 +193,7 @@ html{
 		line-height: 3rem ;
 	}
 
-	.el-button{
+	.login-form .el-button{
 		font-size: $fontSizeMedium ;
 		margin-top: 1rem ;
 	}
