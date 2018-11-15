@@ -3,7 +3,7 @@
     <div class="login-main">
     	<p class="login-logo"><img src="../../static/images/logo-black.png" /></p>
     	<p class="login-title">先进的静态分析检测工具</p>
-    	<div class="login-alert">
+    	<div class="login-alert" v-show="loginError">
 	    	<template>
 			  <el-alert
 			    title="登录名或登录密码不正确"
@@ -21,8 +21,8 @@
 			    <el-input type="password" v-model="form.password"></el-input>
 			  </el-form-item>
     		  <el-form-item>
-    			<el-button type="primary" @click="onSubmit">注册</el-button>
-    			<el-button type="primary" @click="onSubmit">登录</el-button>
+    			<el-button type="primary" @click="register">注册</el-button>
+    			<el-button type="primary" @click="login">登录</el-button>
     		  </el-form-item>
 			</el-form>
     	</div>
@@ -39,16 +39,52 @@ export default {
         form: {
           username: '',
           password: ''
-        }
+				},
+				loginError: false
       }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!');
+			register() {
+				var that = this
+				var data = this.form
+				data.cmd = 'signup'
+				this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+					console.log(res)
+					if(res.data && res.data.result == 0) {
+						// 注册成功
+						that.$message({
+							showClose: true,
+							message: '注册成功,请登录',
+							type: 'success'
+						});
+					}else {
+						// 注册失败
+						that.$message({
+							showClose: true,
+							message: '注册失败,请重试',
+							type: 'warning'
+						});
+					}
+				})
+			},
+      login() {
+				var that = this
 				var data = this.form
 				data.cmd = 'login'
-				this.$ajax.post('/index.php', "msg="+JSON.stringify(data) ).then(res => {
-					console.log(res)
+				this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+					if(res.data && res.data.result == 0) {
+						// 登录成功
+						that.$message({
+							showClose: true,
+							message: '登录成功',
+							type: 'success'
+						});
+						that.$cookie.set('wk_token', res.data.token, 8)
+						that.$cookie.set('wk_username', data.username, 8)
+						that.$router.push({name: 'list'})
+					}else {
+						that.loginError = true
+					}
 				})
       }
     }

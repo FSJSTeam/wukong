@@ -4,17 +4,18 @@ import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
-import qs from 'qs'
+import VueCookies from 'vue-cookie'
 Vue.use(ElementUI);
-
+Vue.use(VueCookies)
 Vue.config.productionTip = false;
 
+var ENV = 'dev'
+var baseUrl = ENV == 'dev' ? '/api' : 'http://39.98.66.212/index.php/'
 const service = axios.create({
-  baseURL: '/list',           // api的base_url
+  baseURL: baseUrl,           // api的base_url
   timeout: 60000, // 请求超时时间
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-    // 'Content-Type': 'application/json;charset=utf-8'
   },
   // transformRequest: data => qs.stringify(data)
  })
