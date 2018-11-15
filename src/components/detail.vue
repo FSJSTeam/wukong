@@ -102,7 +102,11 @@ export default {
       type: '',
       formInline: {
         reportType: '',
-        reportBug: ''
+        reportBug: '',
+        run_id: 0,
+        bug_num: 0,
+        _id: 0,
+        bug_type: ''
       },
       bugData: [
         {
@@ -135,6 +139,13 @@ export default {
   },
   mounted() {
     this.type = this.$route.query.type
+    this.run_id = this.$route.query.run_id
+    this.bug_num = this.$route.query.bug_num
+    if(this.type == 'file') {
+      this._id = this.$route.query._id      
+    }else if(this.type == 'bug') {
+      this.bug_type = this.$route.query.bugtype
+    }
   },
   methods: {
     handleView() {

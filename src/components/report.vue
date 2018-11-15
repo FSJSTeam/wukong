@@ -148,8 +148,7 @@ export default {
         this.$router.push({name: 'detail', query: {type, run_id: this.run_id, _id: row.file_id, bug_num: row.bug_number}})
       }else if(type == 'bug') {
         this.$router.push({name: 'detail', query: {type, run_id: this.run_id, bugtype: row.bugtype, bug_num: row.bug_number}})
-      }
-      
+      }      
     }
   }
 }
