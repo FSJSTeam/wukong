@@ -73,7 +73,6 @@ export default {
       }
     },
     setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList) {
-      console.log(chartContainerId)
       var chart = Highcharts.chart(chartContainerId, {
         chart: {
           type: 'column'

@@ -104,7 +104,6 @@ export default {
         token: that.$cookie.get('wk_token')
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        console && console.log(res.data)
         if(res.data) {
           that.compareData = Array.isArray(res.data)? res.data: [res.data]
           that.result_show = true
