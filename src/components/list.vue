@@ -7,19 +7,12 @@
     </ul> -->
     <el-row>
       <el-col :span="20" :offset="2">
-        <div class="item">
+        <div class="item" v-for="(name, index) in names" keys="name">
           <div class="item-title">
-            <router-link :to="{ name: 'report'}">SED</router-link>
-            <span class="compare" @click="toCompare('1')">比较 ></span>
+            <router-link :to="{ name: 'report', query: {name}}">{{name}}</router-link>
+            <span class="compare" @click="toCompare(name)">比较 ></span>
           </div>
-          <div class="item-chart" id="item1"></div>
-        </div>
-        <div class="item">
-          <div class="item-title">
-            <router-link :to="{ name: 'report'}">SED</router-link>
-            <span class="compare" @click="toCompare('1')">比较 ></span>
-          </div>
-          <div class="item-chart" id="item2"></div>
+          <div class="item-chart" :id="'item'+(index)"></div>
         </div>
       </el-col>
     </el-row>
@@ -32,15 +25,56 @@ export default {
   name: 'WkList',
   data () {
     return {
-      msg: ''
+      msg: '',
+      names: []
     }
   },
   mounted() {
-    this.setChart('item1')
-    this.setChart('item2')
+    this.loadData()
   },
   methods: {
-    setChart(chartContainerId) {
+    loadData() {
+      var that = this
+      var data = {
+        token: that.$cookie.get('wk_token'),
+        cmd: 'runs'
+      }
+      that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+        console.log(res.data)
+        if(res.data && res.data.length >0) {
+          that.handleData(res.data)
+        }else {
+          that.$message({
+            showClose: true,
+            message: '暂无数据',
+            type: 'warning'
+          })
+        }
+      })
+    },
+    handleData(list) {
+      var that = this
+      var names = []
+      for(var i=0; i<list.length; i++) {
+        if(!names.includes(list[i].name) ) {
+          names.push(list[i].name)
+        }
+      }
+      that.names = names
+      for(let n=0; n<names.length; n++) {
+        var data = list.filter(item => item.name = names[n])
+        var categories = data.map(item => item.date)
+        var unknownList = data.map(item => item.unknown_bug_num)
+        var realBugList = data.map(item => item.real_bug_num)
+        var falsePositiveList = data.map(item => item.fp_bug_num)
+        setTimeout(() => {
+          that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList)
+        }, 100)
+        
+      }
+    },
+    setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList) {
+      console.log(chartContainerId)
       var chart = Highcharts.chart(chartContainerId, {
         chart: {
           type: 'column'
@@ -49,10 +83,10 @@ export default {
           text: 'Every RUN\'S BUGS OF PROJECT'
         },
         subtitle: {
-          text: 'SOURSE: SED'
+          text: 'SOURSE: '+ name
         },
         xAxis: {
-          categories: ['20171226220534', '20171226220834', '20171227220834', '20171227290834', '20171229290834']
+          categories
         },
         yAxis: {
           min: 0,
@@ -100,18 +134,18 @@ export default {
         },
         series: [{
           name: 'UNKNOWN',
-          data: [5, 3, 4, 7, 2]
+          data: unknownList
         }, {
           name: 'FALSE POSITIVE',
-          data: [2, 2, 3, 2, 1]
+          data: falsePositiveList
         }, {
           name: 'REAL BUG',
-          data: [3, 4, 4, 2, 5]
+          data: realBugList
         }]
     });
     },
-    toCompare(type) {
-      this.$router.push({name: 'report', query: {type}})
+    toCompare(name) {
+      this.$router.push({name: 'report', query: {name}})
     }
   }
 }
