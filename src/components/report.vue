@@ -6,10 +6,12 @@
           <el-tab-pane label="view by file" name="file">
             <el-table :data="table1data" stripe border>
               <el-table-column sortable prop="filename" label="File Name"></el-table-column>
-              <el-table-column prop="fileid" label="File Id"></el-table-column>
+              <el-table-column prop="file_id" label="File Id"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
-              <el-table-column prop="real_bug" label="Real Bug"></el-table-column>
-              <el-table-column prop="false_positive" label="False Positive"></el-table-column>
+              <el-table-column prop="real_bug_num" label="Real Bug"></el-table-column>
+              <el-table-column prop="fp_bug_num" label="False Positive"></el-table-column>
+              <el-table-column prop="unknown_bug_num" label="Unknown"></el-table-column>
+              <el-table-column prop="usetime" label="TimeSpeed"></el-table-column>
               <el-table-column label="操作" width="130">
                 <template slot-scope="scope">
                   <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'file')">查看</el-button>
@@ -19,8 +21,11 @@
           </el-tab-pane>
           <el-tab-pane label="view by bug type" name="bugtype">
             <el-table :data="table2data" stripe border>
-              <el-table-column prop="bug_type" label="Bug Type"></el-table-column>
+              <el-table-column prop="bugtype" label="Bug Type"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
+              <el-table-column prop="real_bug_num" label="Real Bug"></el-table-column>
+              <el-table-column prop="fp_bug_num" label="False Positive"></el-table-column>
+              <el-table-column prop="unknown_bug_num" label="Unknown"></el-table-column>
               <el-table-column label="操作" width="130">
                 <template slot-scope="scope">
                   <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'bug')">查看</el-button>
@@ -46,55 +51,65 @@ export default {
   data () {
     return {
       msg: '报告显示页',
+      run_id: 0,
       activeName: 'file',
-      table1data: [{
-        filename: '/sed/utils.c',
-        fileid: '20325',
-        bug_number: '13',
-        real_bug: '13',
-        false_positive: '0'
-      },{
-        filename: '/sed/exectude.c',
-        fileid: '20326',
-        bug_number: '3',
-        real_bug: '0',
-        false_positive: '0'
-      },{
-        filename: '/sed/qute.c',
-        fileid: '20327',
-        bug_number: '4',
-        real_bug: '0',
-        false_positive: '1'
-      },{
-        filename: '/sed/teeare.c',
-        fileid: '20328',
-        bug_number: '3',
-        real_bug: '0',
-        false_positive: '1'
-      },{
-        filename: '/sed/local.c',
-        fileid: '20329',
-        bug_number: '8',
-        real_bug: '0',
-        false_positive: '1'
-      }],
-      table2data: [{
-        bug_type: 'use-after-free',
-        bug_number: 13
-      },{
-        bug_type: 'null-ptr',
-        bug_number: 12
-      },{
-        bug_type: 'uninit-var',
-        bug_number: 10
-      }]
+      table1data: [],
+      table2data: []
     }
   },
-  mounted() {
-    this.setChart()
+  mounted() {    
+    this.run_id = this.$route.query.run_id
+    this.loadData()
   },
   methods: {
-    setChart() {
+    loadData() {
+      var that = this
+      var data = {
+        run_id: that.run_id,
+        token: that.$cookie.get('wk_token'),
+        cmd: 'list'
+      }
+      that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+        if(res.data) {
+          that.table1data = Array.isArray(res.data)? res.data: [res.data]
+          if(that.table1data.length > 0) {
+            // 计算总bug数
+            that.table1data.map(item => {
+              item.bug_number = item.real_bug_num + item.fp_bug_num + item.unknown_bug_num
+              return item
+            })
+          }          
+        }
+      })
+      var datas = {
+        run_id: that.run_id,
+        token: that.$cookie.get('wk_token'),
+        cmd: 'list_bugtype'
+      }
+      that.$ajax.post('/', "msg="+JSON.stringify(datas) ).then(res => {
+        if(res.data) {
+          that.table2data = Array.isArray(res.data)? res.data: [res.data]
+          if(that.table2data.length > 0) {
+            // 计算总bug数
+            that.table2data.map(item => {
+              item.bug_number = item.real_bug_num + item.fp_bug_num + item.unknown_bug_num
+              return item
+            })
+            that.setChart(that.table2data)
+          }
+          
+        }
+      })
+    },
+    setChart(data) {
+      var total = 0
+      data.map(item => {
+        total += item.bug_number
+      })
+      data.map( item => {
+        item.name = item.bugtype
+        item.y = item.bug_number / total
+      })
       Highcharts.chart('container', {
         chart: {
           plotBackgroundColor: null,
@@ -124,24 +139,18 @@ export default {
         series: [{
           name: 'Brands',
           colorByPoint: true,
-          data: [{
-            name: 'use-after-free',
-            y: 35.7,
-            sliced: true,
-            selected: true
-          }, {
-              name: 'null-ptr',
-              y: 7.1
-          }, {
-              name: 'uninit-var',
-              y: 57.1
-          }]
+          data
         }]
     });
     },
     handleDetail(index, row, type) {
       console.log(index, row, type)
-      this.$router.push({name: 'detail', query: {type}})
+      if(type == 'file') {
+        this.$router.push({name: 'detail', query: {type, run_id: this.run_id, _id: row.file_id, bug_num: row.bug_number}})
+      }else if(type == 'bug') {
+        this.$router.push({name: 'detail', query: {type, run_id: this.run_id, bugtype: row.bugtype, bug_num: row.bug_number}})
+      }
+      
     }
   }
 }

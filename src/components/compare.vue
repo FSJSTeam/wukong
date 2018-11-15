@@ -106,7 +106,7 @@ export default {
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
         console && console.log(res.data)
         if(res.data) {
-          that.compareData.push(res.data)
+          that.compareData = Array.isArray(res.data)? res.data: [res.data]
           that.result_show = true
         }else {
           that.$message({
