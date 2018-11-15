@@ -144,7 +144,6 @@ export default {
     });
     },
     handleDetail(index, row, type) {
-      console.log(index, row, type)
       if(type == 'file') {
         this.$router.push({name: 'detail', query: {type, run_id: this.run_id, _id: row.file_id, bug_num: row.bug_number}})
       }else if(type == 'bug') {
