@@ -44,48 +44,85 @@ export default {
       }
     },
     methods: {
+			validate() {
+				if(this.form.username.trim() == '') {
+					this.$message({
+						showClose: true,
+						message: '请输入用户名',
+						type: 'warning'
+					});
+					return false
+				}else if(this.form.username.trim().length < 3) {
+					this.$message({
+						showClose: true,
+						message: '用户名不可少于4位字符',
+						type: 'warning'
+					});
+					return false
+				}else if(this.form.password.trim() == '') {
+					this.$message({
+						showClose: true,
+						message: '请输入密码',
+						type: 'warning'
+					});
+					return false
+				}else if(this.form.password.trim().length < 6) {
+					this.$message({
+						showClose: true,
+						message: '密码不可少于6位',
+						type: 'warning'
+					});
+					return false
+				}else {
+					return true
+				}
+			},
 			register() {
-				var that = this
-				var data = this.form
-				data.cmd = 'signup'
-				this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-					console.log(res)
-					if(res.data && res.data.result == 0) {
-						// 注册成功
-						that.$message({
-							showClose: true,
-							message: '注册成功,请登录',
-							type: 'success'
-						});
-					}else {
-						// 注册失败
-						that.$message({
-							showClose: true,
-							message: '注册失败,请重试',
-							type: 'warning'
-						});
-					}
-				})
+				if(this.validate()) {
+					var that = this
+					var data = this.form
+					data.cmd = 'signup'
+					this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+						console.log(res)
+						if(res.data && res.data.result == 0) {
+							// 注册成功
+							that.$message({
+								showClose: true,
+								message: '注册成功,请登录',
+								type: 'success'
+							});
+						}else {
+							// 注册失败
+							that.$message({
+								showClose: true,
+								message: '注册失败,请重试',
+								type: 'warning'
+							});
+						}
+					})
+				}				
 			},
       login() {
-				var that = this
-				var data = this.form
-				data.cmd = 'login'
-				this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-					if(res.data && res.data.result == 0) {
-						// 登录成功
-						that.$message({
-							showClose: true,
-							message: '登录成功',
-							type: 'success'
-						});
-						that.$cookie.set('wk_token', res.data.token, 8)
-						that.$cookie.set('wk_username', data.username, 8)
-						that.$router.push({name: 'list'})
-					}else {
-						that.loginError = true
-					}
-				})
+				if(this.validate()) {
+					var that = this
+					var data = this.form
+					data.cmd = 'login'
+					this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+						if(res.data && res.data.result == 0) {
+							// 登录成功
+							that.$message({
+								showClose: true,
+								message: '登录成功',
+								type: 'success'
+							});
+							that.$cookie.set('wk_token', res.data.token, 8)
+							that.$cookie.set('wk_username', data.username, 8)
+							that.$router.push({name: 'list'})
+						}else {
+							that.loginError = true
+						}
+					})
+				}				
       }
     }
 }
