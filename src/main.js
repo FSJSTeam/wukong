@@ -20,6 +20,19 @@ const service = axios.create({
   // transformRequest: data => qs.stringify(data)
  })
  Vue.prototype.$ajax = service
+
+ router.beforeEach((to, from, next) => {
+  if(to.path == '/login') {
+    next()
+  }else {
+    let token = VueCookies.get('wk_token')
+    if(!token) {
+      next({path: '/login'})
+    }else {
+      next()
+    }
+  }
+ })
 /* eslint-disable no-new */
 new Vue({
   el: '#index',
