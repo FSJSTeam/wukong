@@ -40,6 +40,10 @@ export default new Router({
       name: 'report',
       component: () => import('@/components/report')
     }, {
+      path: '/compare',
+      name: 'compare',
+      component: () => import('@/components/compare')
+    }, {
       path: '/report/detail',
       name: 'detail',
       component: () => import('@/components/detail')

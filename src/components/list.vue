@@ -9,7 +9,7 @@
       <el-col :span="20" :offset="2">
         <div class="item" v-for="(name, index) in names" keys="name">
           <div class="item-title">
-            <router-link :to="{ name: 'report', query: {name}}">{{name}}</router-link>
+            <router-link :to="{ name: 'compare', query: {name}}">{{name}}</router-link>
             <span class="compare" @click="toCompare(name)">比较 ></span>
           </div>
           <div class="item-chart" :id="'item'+(index)"></div>
@@ -40,7 +40,6 @@ export default {
         cmd: 'runs'
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        console.log(res.data)
         if(res.data && res.data.length >0) {
           that.handleData(res.data)
         }else {
@@ -145,7 +144,7 @@ export default {
     });
     },
     toCompare(name) {
-      this.$router.push({name: 'report', query: {name}})
+      this.$router.push({name: 'compare', query: {name}})
     }
   }
 }
