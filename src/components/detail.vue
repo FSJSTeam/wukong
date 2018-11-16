@@ -2,7 +2,7 @@
   <div class="wk-content">
     <!-- bug 类型 -->
     <el-row v-show="bugshow">
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
           <el-form-item label="Report Type">
             <el-select v-model="formInline.reportType" placeholder="please selected">
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <el-table :data="bugData" stripe border>
           <el-table-column prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="file_name" label="File"></el-table-column>
@@ -37,7 +37,7 @@
           </el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <el-pagination class="mt20"
           background
           layout="prev, pager, next"

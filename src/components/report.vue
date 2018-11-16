@@ -1,7 +1,6 @@
 <template>
   <div class="wk-content">
     <el-row>
-      <el-col :span="20" :offset="2">
         <el-tabs v-model="activeName">
           <el-tab-pane label="view by file" name="file">
             <el-table :data="table1data" stripe border>
@@ -38,7 +37,6 @@
             </div>
           </el-tab-pane>
         </el-tabs>
-      </el-col>
     </el-row>
   </div>
 </template>

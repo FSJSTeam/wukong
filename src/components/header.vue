@@ -44,7 +44,7 @@ export default {
 @import "~static/styles/common";
 
 .wk-header {
-  position: fixed;
+  position: absolute ;
   top: 0;
   right: 0;
   left: 0;

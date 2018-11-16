@@ -1,10 +1,10 @@
 <template>
   <div class="wk-content content">
     <el-row>
-      <el-col :span="20" :offset="2" class="btn-row">
+      <el-col :span="24" class="btn-row">
         <el-button size="medium" @click="compare">对比</el-button>
       </el-col>
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <el-table :data="data" stripe border ref="multipleTable" @selection-change="handleSelectionChange">>
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column sortable prop="run_id" label="run_id"></el-table-column>
