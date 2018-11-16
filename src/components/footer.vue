@@ -18,7 +18,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1;
+  z-index: 6;
   width: 100%;
   height: $footerHeight;
   line-height: $footerHeight;

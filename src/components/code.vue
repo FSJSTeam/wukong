@@ -3,11 +3,36 @@
     
     <el-row >
       <el-col :span="24">
-        Bug List Of {{ filename }}
+        
+      </el-col>
+      <el-col :span="24">
+        <el-form :inline="true" :model="formInline" class="searchForm">
+          <el-form-item :label="'Bug List Of'+ filename">
+            <el-select v-model="formInline.reportType" placeholder="please selected">
+              <el-option label="All" value="All"></el-option>
+              <el-option label="RealBug" value="RealBug"></el-option>
+              <el-option label="FalsePositive" value="FalsePositive"></el-option>
+              <el-option label="Unknown" value="Unknown"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formInline.reportBug" placeholder="please selected">
+              <el-option label="All" value="All"></el-option>
+              <el-option label="True" value="True"></el-option>
+              <el-option label="False" value="False"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
       <el-col :span="8" class="bug-list">
         <ol>
-          <li @click="bugClick(index, item)" :class="{active: currentIndex==index}" v-for="(item, index) in bugList" :key="index">[{{ bug_id }}] Line {{item.line}} {{ item.message }}</li>
+          <li @click="bugClick(index, item)" :class="{active: currentIndex==index}" v-for="(item, index) in bugList" :key="index">
+            <span @click="addCommet(index, item)">标记</span> 
+            [{{ bug_id }}] Line {{item.line}} {{ item.message }}
+            </li>
         </ol>
       </el-col>
       <el-col :span="16" class="code-container">
@@ -19,6 +44,21 @@
         ></codemirror>
       </el-col>
     </el-row>
+    <el-dialog
+      title="Commet"
+      :visible.sync="commetShow"
+      width="70%">
+      <el-input
+        type="textarea"
+        :rows="8"
+        placeholder="多行输入"
+        v-model="commet">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="commetShow = false">取 消</el-button>
+        <el-button type="primary" @click="saveCommet()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -33,11 +73,17 @@ export default {
     return {
       msg: '代码错误展示页',
       code: '',
+      commetShow: false,
+      commet: '',
       currentIndex: 0,
       filename: '',
       run_id: 0,
       bug_id: 0,
       bugList: [],
+      formInline: {
+        reportType: '',
+        reportBug: ''
+      },
       cmOptions: {
         tabSize: 4,
         height: '400px',
@@ -46,6 +92,7 @@ export default {
         lineNumbers: true,
         line: true,
         readOnly: true,
+        viewportMargin: 20,
         gutters: ['CodeMirror-linenumbers', 'breakpoints']
       }
     }
@@ -58,6 +105,13 @@ export default {
       return this.$refs.cm.codemirror
     }
   },
+  watch: {
+    'commetShow'(val) {
+      if(!val) {
+        this.commet = ''
+      }
+    }
+  },
   mounted() {
     this.run_id = this.$route.query.run_id
     this.bug_id = this.$route.query.bug_id
@@ -65,21 +119,39 @@ export default {
   },
   methods: {
     onCmReady(cm) {
-      cm.setSize('auto', '400px')
+      cm.setSize('auto', '350px')
     },
     bugClick(index, item) {
       this.currentIndex = index
       var lineNumber = item.line - 1
-      console.log(lineNumber)
       this.codemirror.clearGutter('breakpoints')
       this.codemirror.setGutterMarker(lineNumber, 'breakpoints', this.makeMarker())
-      // this.codemirror.addWidget({lineNumber}, this.makeMarker(), true)
+      this.clearWidget()
+      this.codemirror.addWidget({line:lineNumber}, this.makeMsgMarker(item.message), true)
+    },
+    clearWidget() {
+      var widgets = document.getElementsByClassName('code-message')
+      if(widgets.length > 0) {
+        for(let i=0; i<widgets.length; i++) {
+          widgets[i].parentNode.removeChild(widgets[i])
+        }
+      }
     },
     makeMarker() {
       var marker = document.createElement('div')
-      marker.style.color = "#822"
+      marker.className = 'code-brekpoints'
       marker.innerHTML = "■"
       return marker
+    },
+    makeMsgMarker(msg) {
+      var marker = document.createElement('div')
+      marker.className = 'code-message'
+      marker.style.color = "#822"
+      marker.innerHTML = msg
+      return marker
+    },
+    addCommet() {
+      this.commetShow = true
     },
     loadBugs() {
       var that = this
@@ -107,8 +179,19 @@ export default {
         token: that.$cookie.get('wk_token')
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        that.code = res.data.file_content
+        that.code = res.data.file_content + '\r\n\r\n'
       })
+    },
+    saveCommet() {
+      if(this.commet.length > 0) {
+        this.mark()
+      }else {
+        this.$message({
+           showClose: true,
+            message: '请输入后再保存',
+            type: 'warning'
+        })
+      }
     },
     mark() {
       var that = this
@@ -116,13 +199,29 @@ export default {
         cmd: 'report_markbug',
         run_id: that.run_id,
         bug_id: that.bug_id,
-        comment: 'comment test',
+        comment: this.commet,
         bugtype: 0,
         token: that.$cookie.get('wk_token')
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        console.log(res.data)
+        if(res.data && res.data.result == '0') {
+          this.$message({
+           showClose: true,
+            message: '保存成功',
+            type: 'success'
+          })
+          this.commetShow = false
+        }else {
+          this.$message({
+           showClose: true,
+            message: '保存失败，请重试',
+            type: 'warning'
+          })
+        }
       })
+    },
+    onSubmit() {
+
     }
   }
 }
@@ -130,7 +229,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
-$minHeight: 400px;
+$minHeight: 350px;
 
 .code-title {
   background: #D3DCE6;
@@ -152,6 +251,19 @@ $minHeight: 400px;
       min-height: 30px;
       line-height: 30px;
       padding: 0 1em;
+      user-select: none;
+      position: relative;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      >span {
+          padding: 3px 4px;
+          font-size: 12px;
+          color: white;
+          background: rgb(217,83,79);
+          cursor: pointer;
+          border-radius: 3px;
+      }
       &.active {
         background: #D3DCE6;
       }
