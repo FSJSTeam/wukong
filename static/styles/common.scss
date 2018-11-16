@@ -123,6 +123,9 @@ body {
 }
 
 .el-table td .cell{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   line-height: 7rem ;
   background: #fff ;
   border-top: 1px solid #d7e0f1 ;
