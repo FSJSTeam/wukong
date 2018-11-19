@@ -24,6 +24,11 @@ html{
 	background: rgba(255, 255, 255, 0.3) ;
 	border-radius: 4px ;
   }
+
+  .redirect a{
+	  color: white;
+	  text-decoration: none;
+  }
   
   .login-logo{
 	text-align: $textAlignCenter ;

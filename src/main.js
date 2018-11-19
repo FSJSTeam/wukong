@@ -22,7 +22,7 @@ const service = axios.create({
  Vue.prototype.$ajax = service
 
  router.beforeEach((to, from, next) => {
-  if(to.path == '/login') {
+  if(to.path == '/login' || to.path == '/sign') {
     next()
   }else {
     let token = VueCookies.get('wk_token')

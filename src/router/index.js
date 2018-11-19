@@ -28,6 +28,10 @@ export default new Router({
     name: 'login',
     component: () => import('@/components/login')
   }, {
+    path: '/sign',
+    name: 'sign',
+    component: () => import('@/components/sign')
+  }, {
     path: '/',
     component: frameCompontent,
     children: [{

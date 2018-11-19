@@ -21,11 +21,11 @@
 			    <el-input type="password" v-model="form.password"></el-input>
 			  </el-form-item>
     		  <el-form-item>
-    			<!-- <el-button type="primary" @click="register">注册</el-button> -->
-    			<el-button type="primary" @click="login">登录</el-button>
+    			<el-button type="primary" @click="register">注册</el-button>
+    			<!-- <el-button type="primary" @click="login">登录</el-button> -->
     		  </el-form-item>
 					<ek-form-item>
-						<p class="tar redirect"><router-link :to="{ name: 'sign'}">去注册>></router-link></p>
+						<p class="tar redirect"><router-link :to="{ name: 'login'}">去登录>></router-link></p>
 					</ek-form-item>
 			</el-form>
     	</div>
