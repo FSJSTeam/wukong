@@ -5,7 +5,7 @@
         <el-button size="medium" @click="compare">对比</el-button>
       </el-col>
       <el-col :span="24">
-        <el-table :data="data" stripe border ref="multipleTable" @selection-change="handleSelectionChange">>
+        <el-table :data="data" border ref="multipleTable" @selection-change="handleSelectionChange">>
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column sortable prop="run_id" label="run_id"></el-table-column>
           <el-table-column sortable prop="name" label="name"></el-table-column>
@@ -58,6 +58,16 @@ export default {
     this.loadData()
   },
   methods: {
+    tableHover() {
+      var cells = document.getElementsByClassName('cell')
+      for(let i=0; i<cells.length; i++) {
+        cells[i].addEventListener('mouseenter', function(e) {
+          // var par = cells[i].parentNode.parentNode
+          console.log(cells[i])
+          cells[i].classList.add('highlight')
+        })
+      }      
+    },
     loadData() {
       var that = this
       var data = {
@@ -65,6 +75,7 @@ export default {
         cmd: 'runs'
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
+        // that.tableHover()
         if(res.data && res.data.length >0) {
           that.data = res.data
         }else {

@@ -1,6 +1,6 @@
 <template>
   <header class="wk-header">
-  	<img class="logo" src="../../static/images/logo.png" />
+  	<img class="logo" src="../../static/images/logo.png" @click="backToHome()" />
   	<div class="user">
   		<el-dropdown trigger="click" @command="action">
 	      <span class="el-dropdown-link">
@@ -28,6 +28,9 @@ export default {
 		}
 	},
 	methods: {
+		backToHome() {
+			this.$router.push({path: '/'})
+		},
 		action(command) {
 			if(command == 'logout') {
 				this.$cookie.delete('wk_token')
@@ -44,7 +47,7 @@ export default {
 @import "~static/styles/common";
 
 .wk-header {
-  position: absolute ;
+  position: fixed ;
   top: 0;
   right: 0;
   left: 0;

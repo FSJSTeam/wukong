@@ -52,9 +52,11 @@ body {
 
 .wk-main {
   width: 100%;
-  position: absolute ;
-  top:$headerHeight;
-  left: 0 ; 
+  // position: absolute ;
+  padding-top: $headerHeight;
+  // top:$headerHeight;
+  // left: 0 ; 
+  float: left;
   padding-bottom: $footerHeight ; 
 }
 

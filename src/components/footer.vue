@@ -14,10 +14,11 @@ export default {
 @import "~static/styles/common";
 
 .wk-footer {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  // position: fixed;
+  // right: 0;
+  // bottom: 0;
+  // left: 0;
+  float: left;
   z-index: 6;
   width: 100%;
   height: $footerHeight;
