@@ -125,7 +125,10 @@ export default {
       this.currentIndex = index
       var lineNumber = item.line - 1
       this.codemirror.clearGutter('breakpoints')
-      this.codemirror.setGutterMarker(lineNumber, 'breakpoints', this.makeMarker())
+      this.codemirror.setGutterMarker(lineNumber, 'breakpoints', this.makeMarker(lineNumber))
+      var brekpoints = document.getElementsByClassName('code-brekpoints')[0]
+      brekpoints.parentNode.classList.add('breakpoint')
+      
       this.clearWidget()
       this.codemirror.addWidget({line:lineNumber}, this.makeMsgMarker(item.message), true)
     },
@@ -137,10 +140,10 @@ export default {
         }
       }
     },
-    makeMarker() {
+    makeMarker(lineNumber) {
       var marker = document.createElement('div')
-      marker.className = 'code-brekpoints'
-      marker.innerHTML = "■"
+      marker.className = 'code-brekpoints CodeMirror-linenumber'
+      marker.innerHTML = lineNumber + 1
       return marker
     },
     makeMsgMarker(msg) {
@@ -232,7 +235,7 @@ export default {
 $minHeight: 350px;
 
 .code-title {
-  background: #D3DCE6;
+  background: #cdcdcd;
   margin: 0;
   height: 40px;
   line-height: 40px;
