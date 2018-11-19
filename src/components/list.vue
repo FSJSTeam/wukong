@@ -132,13 +132,16 @@ export default {
         },
         series: [{
           name: 'UNKNOWN',
-          data: unknownList
+          data: unknownList,
+          color: 'rgb(244,92,91)'
         }, {
           name: 'FALSE POSITIVE',
-          data: falsePositiveList
+          data: falsePositiveList,
+          color: 'rgb(33,195,146)'
         }, {
           name: 'REAL BUG',
-          data: realBugList
+          data: realBugList,
+          color: 'rgb(72,121,223)'
         }]
     });
     },
