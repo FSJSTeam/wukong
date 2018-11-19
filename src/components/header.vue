@@ -53,7 +53,7 @@ export default {
   left: 0;
   width: 100%;
 	height: $headerHeight;
-	z-index: 6;
+	z-index: 7;
   background-color: #323334;
 
   .logo{

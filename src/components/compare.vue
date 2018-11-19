@@ -5,24 +5,19 @@
         <el-button size="medium" @click="compare">对比</el-button>
       </el-col>
       <el-col :span="24">
-        <el-table :data="data" border ref="multipleTable" @selection-change="handleSelectionChange">>
+        <el-table :data="data" border ref="multipleTable" @row-click="handleDetail"  @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" @selection-change="handleSelectionChange" >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column sortable prop="run_id" label="run_id"></el-table-column>
           <el-table-column sortable prop="name" label="name"></el-table-column>
           <el-table-column prop="real_bug_num" label="real_bug_num"></el-table-column>
           <el-table-column prop="unknown_bug_num" label="unknown_bug_num"></el-table-column>
           <el-table-column prop="fp_bug_num" label="fp_bug_num"></el-table-column>
-          <el-table-column sortable prop="date" label="date"></el-table-column>
-          <el-table-column label="操作" width="90">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleDetail(scope.$index, scope.row)">查看</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column sortable prop="date" label="date"></el-table-column>          
         </el-table>
       </el-col>
     </el-row>
     <el-dialog title="对比结果" :visible.sync="result_show">
-      <el-table :data="compareData">
+      <el-table :data="compareData" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter">
         <el-table-column property="run_id" label="run_id"></el-table-column>
         <el-table-column property="bug_id" label="bug_id"></el-table-column>
         <el-table-column property="file_path" label="file_path"></el-table-column>
@@ -58,15 +53,11 @@ export default {
     this.loadData()
   },
   methods: {
-    tableHover() {
-      var cells = document.getElementsByClassName('cell')
-      for(let i=0; i<cells.length; i++) {
-        cells[i].addEventListener('mouseenter', function(e) {
-          // var par = cells[i].parentNode.parentNode
-          console.log(cells[i])
-          cells[i].classList.add('highlight')
-        })
-      }      
+    cellMouseEnter(row, column, cell, event) {
+      cell.parentNode.classList.add('tr-highlight')
+    },
+    cellMouseLeave(row, column, cell, event) {
+      cell.parentNode.classList.remove('tr-highlight')
     },
     loadData() {
       var that = this
@@ -75,7 +66,6 @@ export default {
         cmd: 'runs'
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        // that.tableHover()
         if(res.data && res.data.length >0) {
           that.data = res.data
         }else {
@@ -90,7 +80,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleDetail(index, row) {
+    handleDetail(row) {
       this.$router.push({name: 'report', query: {run_id: row.run_id}})
     },
     compare() {

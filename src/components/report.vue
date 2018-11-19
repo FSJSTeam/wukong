@@ -3,7 +3,7 @@
     <el-row>
         <el-tabs v-model="activeName">
           <el-tab-pane label="view by file" name="file">
-            <el-table :data="table1data" stripe border>
+            <el-table :data="table1data" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter"  >
               <el-table-column sortable prop="filename" label="File Name"></el-table-column>
               <el-table-column prop="file_id" label="File Id"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
@@ -11,25 +11,15 @@
               <el-table-column prop="fp_bug_num" label="False Positive"></el-table-column>
               <el-table-column prop="unknown_bug_num" label="Unknown"></el-table-column>
               <el-table-column prop="usetime" label="TimeSpeed"></el-table-column>
-              <el-table-column label="操作" width="130">
-                <template slot-scope="scope">
-                  <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'file')">查看</el-button>
-                </template>
-              </el-table-column>
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="view by bug type" name="bugtype">
-            <el-table :data="table2data" stripe border>
+            <el-table :data="table2data" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
               <el-table-column prop="bugtype" label="Bug Type"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
               <el-table-column prop="real_bug_num" label="Real Bug"></el-table-column>
               <el-table-column prop="fp_bug_num" label="False Positive"></el-table-column>
               <el-table-column prop="unknown_bug_num" label="Unknown"></el-table-column>
-              <el-table-column label="操作" width="130">
-                <template slot-scope="scope">
-                  <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'bug')">查看</el-button>
-                </template>
-              </el-table-column>
             </el-table>
             <div class="chart-container">
               <div class="chart-title">Chart</div>
@@ -60,6 +50,12 @@ export default {
     this.loadData()
   },
   methods: {
+    cellMouseEnter(row, column, cell, event) {
+      cell.parentNode.classList.add('tr-highlight')
+    },
+    cellMouseLeave(row, column, cell, event) {
+      cell.parentNode.classList.remove('tr-highlight')
+    },
     loadData() {
       var that = this
       var data = {
@@ -143,7 +139,8 @@ export default {
         }]
     });
     },
-    handleDetail(index, row, type) {
+    handleDetail(row) {
+      var type = this.activeName == 'file'? 'file' : 'bug'
       if(type == 'file') {
         this.$router.push({name: 'detail', query: {type, run_id: this.run_id, _id: row.file_id, bug_num: row.bug_number}})
       }else if(type == 'bug') {
@@ -177,6 +174,7 @@ export default {
   #container {
     width: calc(100% - 2px);
     float: left;
+    min-height: 300px;
     overflow: hidden;
     border: 1px solid #323334;
   }

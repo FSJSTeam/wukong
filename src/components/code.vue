@@ -22,9 +22,6 @@
               <el-option label="False" value="False"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="8" class="bug-list">
@@ -48,6 +45,11 @@
       title="Commet"
       :visible.sync="commetShow"
       width="70%">
+      <p>
+        <el-radio v-model="commentType" label="1">real bug</el-radio>
+        <el-radio v-model="commentType" label="2">false positive</el-radio>
+      </p>
+      
       <el-input
         type="textarea"
         :rows="8"
@@ -73,6 +75,7 @@ export default {
     return {
       msg: '代码错误展示页',
       code: '',
+      commentType: '1',
       commetShow: false,
       commet: '',
       currentIndex: 0,
@@ -149,7 +152,7 @@ export default {
     makeMsgMarker(msg) {
       var marker = document.createElement('div')
       marker.className = 'code-message'
-      marker.style.color = "#822"
+      marker.style.color = "white"
       marker.innerHTML = msg
       return marker
     },

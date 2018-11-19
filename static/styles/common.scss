@@ -208,9 +208,9 @@ body {
   color: $fontColorBlack ;
 }
 .code-message {
-  background: rgb(255, 248, 180);
+  background: #ef2923;
   border-radius: 4px;
-  box-shadow: 0px 1px 6px 0px #999;
+  box-shadow: 0px 1px 6px 3px #999;
   padding: 5px 10px;
   z-index: 2;
 }
@@ -218,5 +218,11 @@ body {
   left: 0 !important;
 }
 .code-brekpoints {
-  background-color: rgb(255, 151, 141);
+  background-color: green;
+}
+.CodeMirror-linenumber {
+  color: #000 !important;
+}
+.tr-highlight .cell {
+  background-color: rgba(245,108,106,.1) !important;
 }

@@ -4,7 +4,7 @@
     <el-row v-show="bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="Report Type">
+          <el-form-item label="">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
@@ -12,29 +12,29 @@
               <el-option label="Unknown" value="Unknown"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Marked">
+          <el-form-item label="">
             <el-select v-model="formInline.reportBug" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="True" value="True"></el-option>
               <el-option label="False" value="False"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="bugData" stripe border>
+        <el-table :data="bugData" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="file_name" label="File"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
           <el-table-column prop="report_type" label="Report Type"></el-table-column>
           <el-table-column prop="comment" label="Comment"></el-table-column>
-          <el-table-column label="操作" width="90">
+          <!-- <el-table-column label="操作" width="90">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'bug')">查看</el-button>
-            </template>
+            </template> -->
           </el-table-column>
         </el-table>
       </el-col>
@@ -52,7 +52,7 @@
     <el-row v-show="!bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="Report Type">
+          <el-form-item label="">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
@@ -60,30 +60,23 @@
               <el-option label="Unknown" value="Unknown"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Marked">
+          <el-form-item label="">
             <el-select v-model="formInline.reportBug" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="True" value="True"></el-option>
               <el-option label="False" value="False"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="filebugData" stripe border>
+        <el-table :data="filebugData" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
           <el-table-column sortable prop="bug_type" label="Bug Type"></el-table-column>
           <el-table-column prop="report_type" label="Report Type"></el-table-column>
           <el-table-column prop="comment" label="Comment"></el-table-column>
-          <el-table-column label="操作" width="90">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleDetail(scope.$index, scope.row, 'file')">查看</el-button>
-            </template>
-          </el-table-column>
+         
         </el-table>
       </el-col>
       <el-col :span="24">
@@ -145,6 +138,12 @@ export default {
     }else {}
   },
   methods: {
+    cellMouseEnter(row, column, cell, event) {
+      cell.parentNode.classList.add('tr-highlight')
+    },
+    cellMouseLeave(row, column, cell, event) {
+      cell.parentNode.classList.remove('tr-highlight')
+    },
     handleView() {
 
     },
@@ -186,8 +185,8 @@ export default {
         }
       })
     },
-    handleDetail(index, row, type) {
-      console.log(index, row, type)
+    handleDetail(row) {
+      var type = this.type
       this.$router.push({name: 'code', query: {type, run_id: this.run_id, bug_id: row.bug_id, bug_num: this.bug_num}})
     },
     onSubmit() {
