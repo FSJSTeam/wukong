@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "element-ui": "^2.4.9",
     "highcharts": "^6.2.0",
     "qs": "^6.5.2",
