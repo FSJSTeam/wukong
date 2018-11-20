@@ -207,6 +207,13 @@ body {
 .el-form-item__label{
   color: $fontColorBlack ;
 }
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #cc0000;
+  background: #cc0000;
+}
+.el-radio__input.is-checked+.el-radio__label {
+  color: #cc0000;
+}
 .code-message {
   background: #ef2923;
   border-radius: 4px;
