@@ -25,12 +25,21 @@
         </el-form>
       </el-col>
       <el-col :span="8" class="bug-list">
-        <ol>
-          <li @click="bugClick(index, item)" :class="{active: currentIndex==index}" v-for="(item, index) in bugList" :key="index">
-            <span @click="addCommet(index, item)">标记</span> 
-            [{{ bug_id }}] Line {{item.line}} {{ item.message }}
-            </li>
-        </ol>
+        <!-- <ol>
+          <li @click="bugClick(index, item)" :class="{active: currentIndex==index}"  v-for="(item, index) in bugList" :key="index">            
+            <p>[{{ bug_id }}] Line {{item.line}} {{ item.message }}</p>             
+          </li>
+        </ol> -->
+        <el-collapse v-model="activeName" accordion>
+          <el-collapse-item v-for="(item, index) in bugList" :name="index" :key="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
+            <ul>
+              <li v-for="(step, i) in item.steps" :key="i" @click="bugClick(i, step)" @dblclick="addCommet(i, step)">
+                <!-- <span @click="addCommet(index, item)">标记</span>  -->
+                step{{i+1}}: {{step.message}}
+              </li>
+            </ul> 
+          </el-collapse-item>
+        </el-collapse>
       </el-col>
       <el-col :span="16" class="code-container">
         <p class="code-title" v-text="filename"></p>
@@ -78,6 +87,7 @@ export default {
       commentType: '1',
       commetShow: false,
       commet: '',
+      activeName: '',
       currentIndex: 0,
       filename: '',
       run_id: 0,
@@ -227,7 +237,6 @@ export default {
       })
     },
     onSubmit() {
-
     }
   }
 }
@@ -246,14 +255,16 @@ $minHeight: 350px;
   padding-left: 2em;
 }
 .bug-list {
-  min-height: $minHeight + 40px;
+  height: $minHeight + 40px;
   background: white;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding: 20px 0;
-  ol {
+  ul {
     list-style: none;
     margin: 0;
     padding: 0 20px;
-    li {
+    >li {
       min-height: 30px;
       line-height: 30px;
       padding: 0 1em;
@@ -271,7 +282,7 @@ $minHeight: 350px;
           border-radius: 3px;
       }
       &.active {
-        background: #D3DCE6;
+        // background: #D3DCE6;
       }
     }
   }

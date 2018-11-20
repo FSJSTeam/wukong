@@ -214,6 +214,9 @@ body {
 .el-radio__input.is-checked+.el-radio__label {
   color: #cc0000;
 }
+.el-collapse-item__header {
+  padding-left: 20px;
+}
 .code-message {
   background: #ef2923;
   border-radius: 4px;
