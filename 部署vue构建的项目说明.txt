@@ -1,0 +1,22 @@
+因为前端路由使用了history模式，所以需要后台做一些简单的配置。
+
+
+服务器配置参考文档：
+https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90
+
+
+
+举例：
+
+http://106.12.202.229/  使用了nginx服务器，根据文档配置如下即可：
+
+server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  _;
+        root         /usr/www/wukong/dist; # 根目录指向了页面所在的文件夹
+        include /etc/nginx/default.d/*.conf;
+        location / {
+            try_files $uri $uri/ /index.html;  # 根据文档配置，url路由匹配不到静态资源的时候，就返回同一个index.html
+        }
+｝
