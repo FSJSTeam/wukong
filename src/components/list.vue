@@ -81,7 +81,7 @@ export default {
           text: 'Every RUN\'S BUGS OF PROJECT'
         },
         subtitle: {
-          text: 'SOURSE: '+ name
+          //text: 'SOURSE: '+ name
         },
         xAxis: {
           categories
@@ -162,19 +162,22 @@ export default {
     height: 35px;
     line-height: 35px;
     font-size: 16px;
-    background-color: #323334;
-    width: calc(100% - 2em);
+    //background-color: #323334;
+    width: 100%;
+    margin:20px 0;
     float: left;
-    padding-left: 2em;
+    //padding-left: 2em;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     a {
-      color: white;
+      color: black;
+      font-weight:bold;
       text-decoration: none;
     }
     .compare {
+      border-radius: 4px;
       float: right;
       // margin-right: 1em;
       background: #ED1B23;
@@ -191,7 +194,7 @@ export default {
     width: calc(100% - 2px);
     float: left;
     overflow: hidden;
-    border: 1px solid #323334;
+    box-shadow: 1px 1px 6px 3px #d7e0f1;
   }
 }
 </style>

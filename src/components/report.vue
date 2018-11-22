@@ -154,29 +154,29 @@ export default {
 <style lang="scss" scoped>
 @import "~static/styles/common";
 .chart-container {
-  width: 100%;
-  margin-top: 25px;
-  float: left;
+    width: calc(100% - 30px);
+    margin-top: 25px;
+    padding: 15px;
+    float: left;
+    background: #fff;
+    box-shadow: 1px 1px 6px 3px #d7e0f1;
   .chart-title {
     height: 35px;
     line-height: 35px;
     font-size: 16px;
-    color: white;
-    background-color: #323334;
-    width: calc(100% - 2em);
+    color: #cc0000;
+    background-color: #fff;
+    width: 100%;
     float: left;
-    padding-left: 2em;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
+    //padding-left: 2em;
+    border-bottom: 1px solid #000;
   }
   #container {
-    width: calc(100% - 2px);
+    width: 100%;
     float: left;
     min-height: 300px;
     overflow: hidden;
-    border: 1px solid #323334;
+    //border: 1px solid #323334;
   }
 }
 </style>
