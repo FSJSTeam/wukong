@@ -54,7 +54,7 @@
       title="Commet"
       :visible.sync="commetShow"
       width="70%">
-      <p>
+      <p class="commentRadio">
         <el-radio v-model="commentType" label="1">real bug</el-radio>
         <el-radio v-model="commentType" label="2">false positive</el-radio>
       </p>
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     onCmReady(cm) {
-      cm.setSize('auto', '350px')
+      cm.setSize('auto', '560px')
     },
     bugClick(index, item) {
       this.currentIndex = index
@@ -244,8 +244,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
-$minHeight: 350px;
-
+$minHeight: 600px;
+.searchForm{
+  margin-top: 5px ;
+}
+.commentRadio {
+  padding: 0 0 30px 0;
+  margin: 0;
+}
 .code-title {
   background: #cdcdcd;
   margin: 0;
@@ -255,8 +261,9 @@ $minHeight: 350px;
   padding-left: 2em;
 }
 .bug-list {
-  height: $minHeight + 40px;
-  background: white;
+  height: $minHeight;
+  background: $whiteBackground;
+  border: 1px solid $BlackBackground ;
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 20px 0;
@@ -287,9 +294,13 @@ $minHeight: 350px;
     }
   }
 }
+
 .code-container {
   min-height: $minHeight;
   background: white;
+}
+.el-collapse{
+  border-top: 0px ;
 }
 </style>
  

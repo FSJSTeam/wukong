@@ -4,7 +4,7 @@
     <el-row v-show="bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="">
+          <el-form-item label="null-ptr bug">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
@@ -25,7 +25,7 @@
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="bugData" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="bugData" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="file_name" label="File"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
@@ -52,7 +52,7 @@
     <el-row v-show="!bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="">
+          <el-form-item label="null-ptr bug">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
@@ -70,7 +70,7 @@
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="filebugData" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="filebugData" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
           <el-table-column sortable prop="bug_type" label="Bug Type"></el-table-column>
@@ -198,9 +198,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
-
-$margin: 22px;
 .searchForm {
-  margin-top: $margin;
+  margin-top: 5px ;
+}
+.el-form-item{
+  margin-bottom: 10px ;
 }
 </style>

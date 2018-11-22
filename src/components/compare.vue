@@ -1,27 +1,30 @@
 <template>
-  <div class="wk-content content">
+  <div class="wk-content">
     <el-row>
       <el-col :span="24" class="btn-row">
-        <el-button size="medium" @click="compare">对比</el-button>
+        <el-button size="medium" @click="compare">比较 <i class="el-icon-arrow-right"></i></el-button>
       </el-col>
       <el-col :span="24">
         <el-table :data="data" border ref="multipleTable" @row-click="handleDetail"  @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" @selection-change="handleSelectionChange" >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column sortable prop="run_id" label="run_id"></el-table-column>
-          <el-table-column sortable prop="name" label="name"></el-table-column>
-          <el-table-column prop="real_bug_num" label="real_bug_num"></el-table-column>
-          <el-table-column prop="unknown_bug_num" label="unknown_bug_num"></el-table-column>
-          <el-table-column prop="fp_bug_num" label="fp_bug_num"></el-table-column>
-          <el-table-column sortable prop="date" label="date"></el-table-column>          
+          <el-table-column type="selection" width="65"></el-table-column>
+          <el-table-column sortable prop="run_id" label="Run ID"></el-table-column>
+          <el-table-column sortable prop="name" label="Name"></el-table-column>
+          <el-table-column prop="real_bug_num" label="Real Bug Num"></el-table-column>
+          <el-table-column prop="unknown_bug_num" label="Unknown Bug Num"></el-table-column>
+          <el-table-column prop="fp_bug_num" label="Fp Bug Name"></el-table-column>
+          <el-table-column sortable prop="date" label="Date"></el-table-column>          
         </el-table>
       </el-col>
     </el-row>
-    <el-dialog title="对比结果" :visible.sync="result_show">
+    <el-dialog title="" :visible.sync="result_show">
+      <p class="rtnBtn">
+        <el-button size="medium" @click="result_show = false"><i class="el-icon-arrow-left"></i>返回 </el-button>
+      </p>
       <el-table :data="compareData" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter">
-        <el-table-column property="run_id" label="run_id"></el-table-column>
-        <el-table-column property="bug_id" label="bug_id"></el-table-column>
-        <el-table-column property="file_path" label="file_path"></el-table-column>
-        <el-table-column property="line" label="line"></el-table-column>
+        <el-table-column property="run_id" label="Run ID"></el-table-column>
+        <el-table-column property="bug_id" label="Bug ID"></el-table-column>
+        <el-table-column property="file_path" label="file Path"></el-table-column>
+        <el-table-column property="line" label="Line"></el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -123,13 +126,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
-
-$margin: 22px;
-.content {
-  margin-top: $margin;
-}
 .btn-row {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 5px 0px 20px 0px ;
+}
+.rtnBtn {
+  margin: 0;
+  padding-bottom: 10px; 
 }
 </style>

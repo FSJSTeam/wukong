@@ -6,7 +6,7 @@
     	<div class="login-alert" v-show="loginError">
 	    	<template>
 			  <el-alert
-			    title="登录名或登录密码不正确"
+			    :title="alertMsg"
 			    type="warning"
 			    show-icon>
 			  </el-alert>
@@ -41,42 +41,38 @@ export default {
       return {
         form: {
           username: '',
+          
           password: ''
 				},
+				alertMsg: '',
 				loginError: false
       }
     },
     methods: {
 			validate() {
 				if(this.form.username.trim() == '') {
-					this.$message({
-						showClose: true,
-						message: '请输入用户名',
-						type: 'warning'
-					});
+					
+					this.alertMsg = '请输入用户名'
+					this.loginError = true
 					return false
 				}else if(this.form.username.trim().length < 3) {
-					this.$message({
-						showClose: true,
-						message: '用户名不可少于4位字符',
-						type: 'warning'
-					});
+					
+					this.alertMsg = '用户名不可少于4位字符'
+					this.loginError = true
 					return false
 				}else if(this.form.password.trim() == '') {
-					this.$message({
-						showClose: true,
-						message: '请输入密码',
-						type: 'warning'
-					});
+				
+					this.alertMsg = '请输入密码'
+					this.loginError = true
 					return false
 				}else if(this.form.password.trim().length < 6) {
-					this.$message({
-						showClose: true,
-						message: '密码不可少于6位',
-						type: 'warning'
-					});
+				
+					this.alertMsg = '密码不可少于6位'
+					this.loginError = true
 					return false
 				}else {
+					this.alertMsg = ''
+					this.loginError = false
 					return true
 				}
 			},
@@ -95,12 +91,10 @@ export default {
 								type: 'success'
 							});
 						}else {
-							// 注册失败
-							that.$message({
-								showClose: true,
-								message: '注册失败,请重试',
-								type: 'warning'
-							});
+							// 注册失败		
+							that.alertMsg = '注册失败,请重试'
+							that.loginError = true
+
 						}
 					})
 				}				

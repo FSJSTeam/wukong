@@ -10,7 +10,7 @@
         <div class="item" v-for="(name, index) in names" keys="name">
           <div class="item-title">
             <router-link :to="{ name: 'compare', query: {name}}">{{name}}</router-link>
-            <span class="compare" @click="toCompare(name)">比较 ></span>
+            <span class="compare" @click="toCompare(name)">比较 <i class="el-icon-arrow-right"></i></span>
           </div>
           <div class="item-chart" :id="'item'+(index)"></div>
         </div>
@@ -157,7 +157,6 @@ export default {
 .item {
   width: 100%;
   float: left;
-  margin-top: 25px;
   .item-title {
     height: 35px;
     line-height: 35px;
@@ -167,10 +166,6 @@ export default {
     margin:20px 0;
     float: left;
     //padding-left: 2em;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
     a {
       color: black;
       font-weight:bold;
@@ -180,21 +175,28 @@ export default {
       border-radius: 4px;
       float: right;
       // margin-right: 1em;
-      background: #ED1B23;
-      font-size: 12px;
-      color: white;
-      padding: 0 13px;
+      background: $RedBackground ;
+      font-size: $fontSizeMedium ;
+      color: $fontColorWhite ;
+      padding: 3px 20px;
       text-align: center;
       cursor: pointer;
       height: 100%;
+
+      i{
+        font-weight: bold ;
+      }
     }
   }
   .item-chart {
-    min-height: 300px;
-    width: calc(100% - 2px);
     float: left;
+    min-height: 300px;
+    width: calc(100% - 81px);
+    padding: 40px ;
     overflow: hidden;
+    background: $whiteBackground ;
     box-shadow: 1px 1px 6px 3px #d7e0f1;
+    border-radius: 8px ;
   }
 }
 </style>

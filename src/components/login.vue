@@ -6,7 +6,7 @@
     	<div class="login-alert" v-show="loginError">
 	    	<template>
 			  <el-alert
-			    title="登录名或登录密码不正确"
+			    :title="alertMsg"
 			    type="warning"
 			    show-icon>
 			  </el-alert>
@@ -21,12 +21,13 @@
 			    <el-input type="password" v-model="form.password"></el-input>
 			  </el-form-item>
     		  <el-form-item>
-    			<!-- <el-button type="primary" @click="register">注册</el-button> -->
+    			
     			<el-button type="primary" @click="login">登录</el-button>
+    			<el-button type="primary" @click="register">注册</el-button>
     		  </el-form-item>
-				<el-form-item>
+				<!-- <el-form-item>
 					<p class="tar redirect"><router-link :to="{ name: 'sign'}">去注册>></router-link></p>
-				</el-form-item>
+				</el-form-item> -->
 			</el-form>
     	</div>
     </div>
@@ -39,6 +40,7 @@ export default {
   name: 'WkLogin',
   data() {
       return {
+      	alertMsg: '',
         form: {
           username: '',
           password: ''
@@ -49,39 +51,34 @@ export default {
     methods: {
 			validate() {
 				if(this.form.username.trim() == '') {
-					this.$message({
-						showClose: true,
-						message: '请输入用户名',
-						type: 'warning'
-					});
+					
+					this.alertMsg = '请输入用户名'
+					this.loginError = true
 					return false
 				}else if(this.form.username.trim().length < 3) {
-					this.$message({
-						showClose: true,
-						message: '用户名不可少于4位字符',
-						type: 'warning'
-					});
+					
+					this.alertMsg = '用户名不可少于4位字符'
+					this.loginError = true
 					return false
 				}else if(this.form.password.trim() == '') {
-					this.$message({
-						showClose: true,
-						message: '请输入密码',
-						type: 'warning'
-					});
+				
+					this.alertMsg = '请输入密码'
+					this.loginError = true
 					return false
 				}else if(this.form.password.trim().length < 6) {
-					this.$message({
-						showClose: true,
-						message: '密码不可少于6位',
-						type: 'warning'
-					});
+				
+					this.alertMsg = '密码不可少于6位'
+					this.loginError = true
 					return false
 				}else {
+					this.alertMsg = ''
+					this.loginError = false
 					return true
 				}
 			},
 			register() {
-				if(this.validate()) {
+				this.$router.push({path: '/sign'})
+				/** if(this.validate()) {
 					var that = this
 					var data = this.form
 					data.cmd = 'signup'
@@ -103,7 +100,8 @@ export default {
 							});
 						}
 					})
-				}				
+				}	
+				**/			
 			},
       login() {
 				if(this.validate()) {

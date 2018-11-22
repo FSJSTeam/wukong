@@ -3,7 +3,7 @@
     <el-row>
         <el-tabs v-model="activeName">
           <el-tab-pane label="view by file" name="file">
-            <el-table :data="table1data" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter"  >
+            <el-table :data="table1data" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter"  >
               <el-table-column sortable prop="filename" label="File Name"></el-table-column>
               <el-table-column prop="file_id" label="File Id"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
@@ -14,7 +14,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="view by bug type" name="bugtype">
-            <el-table :data="table2data" stripe border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+            <el-table :data="table2data" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
               <el-table-column prop="bugtype" label="Bug Type"></el-table-column>
               <el-table-column sortable prop="bug_number" label="Bug Number"></el-table-column>
               <el-table-column prop="real_bug_num" label="Real Bug"></el-table-column>
@@ -154,7 +154,8 @@ export default {
 <style lang="scss" scoped>
 @import "~static/styles/common";
 .chart-container {
-    width: calc(100% - 30px);
+    width: calc(60% - 30px);
+    min-height: 500px ;
     margin-top: 25px;
     padding: 15px;
     float: left;

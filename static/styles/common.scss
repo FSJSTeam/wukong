@@ -1,5 +1,5 @@
 $headerHeight: 8rem;
-$footerHeight: 7rem;
+$footerHeight: 5rem;
 
 /* Font Size Setting */
 $fontSizeSmall: 12px;
@@ -35,6 +35,10 @@ html{
 	font-size: 14px ;
 }
 
+table{
+  border-spacing: 0px ;
+}
+
 @media screen and (max-width: 1366px){
 	html{
 		font-size: 14px ;
@@ -59,9 +63,13 @@ body {
   float: left;
   padding-bottom: $footerHeight ; 
 }
-
+@media screen and (max-width: 1366px) {
+  .wk-main{
+   padding-top: 5.3rem ; 
+  }
+}
 .wk-content{
-  padding: 15px 35px ;
+  padding: 20px 35px ;
 }
 .mt20 {
   margin-top: 20px;
@@ -70,6 +78,13 @@ body {
 .tar {
   text-align: right;
 }
+
+/* table style*/
+.el-table--border, 
+.el-table--group{
+  border: 0px ;
+}
+
 .el-tabs__nav-wrap::after{
   height: 1px ;
   background-color: $BlackBackground ;
@@ -110,11 +125,11 @@ body {
 }
 
 .el-table .descending .sort-caret.descending{
-  border-top-color: #cc0000 ;
+  border-top-color: $RedBackground ;
 }
 
 .el-table .ascending .sort-caret.ascending{
-  border-bottom-color: #cc0000 ;
+  border-bottom-color: $RedBackground ;
 }
 
 .el-table td, 
@@ -125,6 +140,12 @@ body {
 .el-table th,
 .el-table td{
   padding: 6px 0px ;
+  background: #edf0f5 ;
+}
+
+.el-dialog .el-table--border::after, 
+.el-dialog .el-table--group::after, 
+.el-dialog .el-table::before{
   background: #edf0f5 ;
 }
 
@@ -151,23 +172,35 @@ body {
   border-right: 1px solid #d7e0f1 ;
 }
 
+/* select style */
+
 .el-select .el-input.is-focus .el-input__inner,
 .el-select .el-input__inner:focus{
-  border-color: #cc0000 ;
+  border-color: $RedBackground ;
+}
+
+.el-input__inner{
+  height: 48px ;
+  line-height: 48px ;
 }
 
 .el-select-dropdown__item.hover{
-  background: #cc0000 ;
+  background: $RedBackground ;
 }
-
+.el-textarea__inner:focus {
+    border-color: $RedBackground;
+}
 .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
   background: #fff9f9 ;
 }
-
-/* buton */
+.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+    background-color: #fff9f9;
+    color: #606266;
+}
+/* button */
 .el-button--primary{
   background-color: $RedBackground;
-  border-color: #c20001;
+  border-color: $RedBackground ;
 }
 
 .el-button:focus, 
@@ -206,16 +239,20 @@ body {
 /* form */
 .el-form-item__label{
   color: $fontColorBlack ;
+  line-height: 48px ;
 }
 .el-radio__input.is-checked .el-radio__inner {
-  border-color: #cc0000;
-  background: #cc0000;
+  border-color: $RedBackground ;
+  background: $RedBackground ;
 }
 .el-radio__input.is-checked+.el-radio__label {
-  color: #cc0000;
+  color: $fontColorRed ;
 }
 .el-collapse-item__header {
   padding-left: 20px;
+}
+.el-dialog__footer {
+  text-align: center;
 }
 .code-message {
   background: #ef2923;
@@ -228,19 +265,64 @@ body {
   left: 0 !important;
 }
 .code-brekpoints {
-  background-color: green;
+  //background-color: green;
+  background-color:rgb(255,151,142);
 }
 .CodeMirror-linenumber {
-  color: #000 !important;
+  color: $fontColorBlack !important;
+}
+.CodeMirror-gutters {
+  background-color: rgb(226,226,226) !important;
 }
 .tr-highlight .cell {
-  border-top: 1px solid #cc0000 !important;
-  border-bottom:  1px solid #cc0000 !important;
+  border-top: 1px solid $RedBackground !important;
+  border-bottom:  1px solid $RedBackground !important;
   background-color: #fff9f9 !important;
 }
 .tr-highlight td:first-child .cell {
-  border-left: 1px solid #cc0000 !important;
+  border-left: 1px solid $RedBackground !important;
 }
 .tr-highlight td:last-child .cell {
-  border-right: 2px solid #cc0000 !important;
+  border-right: 2px solid $RedBackground !important;
 }
+
+.el-checkbox__inner{
+  width: 22px ;
+  height: 22px ;
+}
+
+.el-checkbox__inner::after{
+  width: 6px ;
+  height: 12px ;
+  top: 2px ;
+  left: 7px ;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, 
+.el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: $RedBackground;
+  border-color: $RedBackground;
+}
+
+.el-checkbox__inner:hover{
+  border-color: $RedBackground;
+}
+
+.el-checkbox__input.is-indeterminate .el-checkbox__inner::before{
+  top: 8px ;
+}
+
+/* dialog */
+.el-dialog{
+  border-radius: 8px ;
+}
+
+.el-dialog .el-table th, 
+.el-dialog .el-table td,
+.el-dialog .el-table--border::after, 
+.el-dialog .el-table--group::after, 
+.el-dialog .el-table::before,
+.el-dialog .el-table--enable-row-hover .el-table__body tr:hover > td{
+  background-color: $whiteBackground ;
+}
+

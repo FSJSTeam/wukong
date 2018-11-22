@@ -52,8 +52,8 @@ export default {
   right: 0;
   left: 0;
   width: 100%;
-	height: $headerHeight;
-	z-index: 7;
+  height: $headerHeight;
+  z-index: 7;
   background-color: #323334;
 
   .logo{
@@ -74,4 +74,17 @@ export default {
 	}
   }
 }
+@media screen and (max-width: 1366px) {
+  .wk-header{
+  	height: 5.3rem ;
+
+  	.logo{
+	  	width: 220px ;
+	  }
+
+	.user{
+		margin-top: 30px ;
+	}
+  }
+ }
 </style>
