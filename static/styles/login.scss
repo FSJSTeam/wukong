@@ -26,7 +26,7 @@ html{
   }
 
   .redirect a{
-	  color: white;
+	  color: $fontColorWhite ;
 	  text-decoration: none;
   }
   
@@ -120,21 +120,19 @@ html{
 	  padding: 0px ;
 	  border: none ;
 	  border-radius: 6px;
-	  &:hover {
-		  background : #fe3f32
-	  }
   }
   
   .el-button+.el-button{
 	  margin-left: 0px ;
   }
   
-  .login-form .el-button,
-  .login-form .el-button:active,
-  .login-form .el-button:focus{
-	  background: $orangeBackground ;
-  }
-  
+ 
+.login-form .el-button:hover,
+.login-form .el-button:active,
+.login-form .el-button:focus{
+  color: $fontColorWhite ;
+  background: #cc0000c7;
+}
   .copyRight{
 	  position: fixed ;
 	  bottom: 1rem ;
@@ -193,7 +191,7 @@ html{
 		  margin-left: 5rem ;
 	  }
   
-	  .el-input__inner{
+	  .login-form .el-input__inner{
 		  height: 3rem ;
 		  line-height: 3rem ;
 	  }

@@ -185,7 +185,20 @@ body {
 .el-select .el-input__inner:focus{
   border-color: $RedBackground ;
 }
-
+/**
+.login-form input::-webkit-input-placeholder{
+    color:#cc0000;
+}
+.login-form input::-moz-placeholder{
+    color:#cc0000;
+}
+.login-form input:-moz-placeholder{
+    color:#cc0000;
+}
+.login-form input:-ms-input-placeholder{
+    color:#cc0000;
+}
+**/
 .el-input__inner{
   height: 48px ;
   line-height: 48px ;
@@ -282,7 +295,7 @@ body {
   background-color: rgb(226,226,226) !important;
 }
 .tr-highlight td {
-  cursor: pointer !important;
+  cursor: pointer;
 }
 .tr-highlight .cell {
   
@@ -337,3 +350,12 @@ body {
   background-color: $whiteBackground ;
 }
 
+/* highchart */
+.highcharts-menu {
+  border: 0 !important;
+  box-shadow:1px 1px 6px 3px #d7e0f1 !important;
+}
+.highcharts-menu-item:hover {
+  background: #fff9f9 !important;
+  color: #606266 !important;     
+}

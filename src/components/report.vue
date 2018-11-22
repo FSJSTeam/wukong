@@ -45,8 +45,7 @@ export default {
       table2data: []
     }
   },
-  mounted() {    
-    Exporting(Highcharts); // exporting插件
+  mounted() {
     this.run_id = this.$route.query.run_id
     this.loadData()
   },
@@ -105,12 +104,21 @@ export default {
         item.name = item.bugtype
         item.y = item.bug_number / total
       })
+      Exporting(Highcharts); // exporting插件
       Highcharts.chart('container', {
         chart: {
           plotBackgroundColor: null,
           plotBorderWidth: null,
           plotShadow: false,
           type: 'pie'
+        },
+        exporting: {
+        enabled: true,
+          buttons: {
+            contextButton: {
+              symbolStroke: '#666'
+            }
+          }
         },
         colors: ['rgb(47,187,254)', 'rgb(29,230,184)', 'rgb(160,136,210)', 'rgb(247,163,91)','#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9', 
     '#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
@@ -154,6 +162,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
+
+
 .chart-container {
     width: calc(60% - 30px);
     min-height: 400px ;

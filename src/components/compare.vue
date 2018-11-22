@@ -129,6 +129,9 @@ export default {
 .btn-row {
   margin: 5px 0px 20px 0px ;
 }
+.el-dialog__header {
+    padding: 0px 20px 10px;
+}
 .rtnBtn {
   margin: 0;
   padding-bottom: 10px; 
