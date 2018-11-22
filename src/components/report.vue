@@ -33,7 +33,7 @@
 
 <script>
 import Highcharts from 'highcharts'
-
+import Exporting from 'highcharts/modules/exporting.js';
 export default {
   name: 'WkReport',
   data () {
@@ -46,6 +46,7 @@ export default {
     }
   },
   mounted() {    
+    Exporting(Highcharts); // exporting插件
     this.run_id = this.$route.query.run_id
     this.loadData()
   },
@@ -155,12 +156,12 @@ export default {
 @import "~static/styles/common";
 .chart-container {
     width: calc(60% - 30px);
-    min-height: 500px ;
-    margin-top: 25px;
+    min-height: 400px ;
+    margin: 25px auto 0 auto ;
     padding: 15px;
-    float: left;
     background: #fff;
     box-shadow: 1px 1px 6px 3px #d7e0f1;
+    border-radius: 8px ;
   .chart-title {
     height: 35px;
     line-height: 35px;
@@ -170,6 +171,7 @@ export default {
     width: 100%;
     float: left;
     //padding-left: 2em;
+    margin-bottom: 20px ;
     border-bottom: 1px solid #000;
   }
   #container {

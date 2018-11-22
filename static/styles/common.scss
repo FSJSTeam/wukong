@@ -63,14 +63,21 @@ body {
   float: left;
   padding-bottom: $footerHeight ; 
 }
+
+.wk-content{
+  padding: 20px 35px ;
+  min-height: 700px ;
+}
 @media screen and (max-width: 1366px) {
   .wk-main{
    padding-top: 5.3rem ; 
   }
+
+  .wk-content{
+    min-height: 400px ;
+  }
 }
-.wk-content{
-  padding: 20px 35px ;
-}
+
 .mt20 {
   margin-top: 20px;
 }
@@ -274,7 +281,11 @@ body {
 .CodeMirror-gutters {
   background-color: rgb(226,226,226) !important;
 }
+.tr-highlight td {
+  cursor: pointer !important;
+}
 .tr-highlight .cell {
+  
   border-top: 1px solid $RedBackground !important;
   border-bottom:  1px solid $RedBackground !important;
   background-color: #fff9f9 !important;
