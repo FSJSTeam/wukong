@@ -302,6 +302,7 @@ body {
   border-top: 1px solid $RedBackground !important;
   border-bottom:  1px solid $RedBackground !important;
   background-color: #fff9f9 !important;
+  cursor:pointer !important;
 }
 .tr-highlight td:first-child .cell {
   border-left: 1px solid $RedBackground !important;
@@ -348,6 +349,10 @@ body {
 .el-dialog .el-table::before,
 .el-dialog .el-table--enable-row-hover .el-table__body tr:hover > td{
   background-color: $whiteBackground ;
+}
+
+.compare-content .el-dialog__header {
+    padding: 0px 20px 10px !important;
 }
 
 /* highchart */

@@ -1,5 +1,5 @@
 <template>
-  <div class="wk-content">
+  <div class="wk-content compare-content">
     <el-row>
       <el-col :span="24" class="btn-row">
         <el-button size="medium" @click="compare">比较 <i class="el-icon-arrow-right"></i></el-button>
@@ -129,9 +129,7 @@ export default {
 .btn-row {
   margin: 5px 0px 20px 0px ;
 }
-.el-dialog__header {
-    padding: 0px 20px 10px;
-}
+
 .rtnBtn {
   margin: 0;
   padding-bottom: 10px; 
