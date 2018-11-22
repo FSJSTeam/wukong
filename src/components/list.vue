@@ -83,6 +83,9 @@ export default {
         subtitle: {
           //text: 'SOURSE: '+ name
         },
+        exporting: {
+          enabled: false
+        },
         xAxis: {
           categories
         },
