@@ -31,14 +31,21 @@
           </li>
         </ol> -->
         <el-collapse v-model="activeName" accordion>
-          <el-collapse-item v-for="(item, index) in bugList" :name="index" :key="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
-            <ul>
-              <li v-for="(step, i) in item.steps" :key="i" @click="bugClick(i, step)" @dblclick="addCommet(i, step)">
-                <!-- <span @click="addCommet(index, item)">标记</span>  -->
-                step{{i+1}}: {{step.message}}
-              </li>
-            </ul> 
-          </el-collapse-item>
+          <div v-for="(item, index) in bugList" :name="index" :key="index" @click="bugClick(index, item)">
+            <el-collapse-item  :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
+              <ul>
+                <li v-for="(step, i) in item.steps" 
+                :key="i"
+                @click.stop="stepClick(i, step)" 
+                @contextmenu.prevent="rightClick(i, step)"
+                @dblclick="addCommet(i, step)">
+                  <!-- <span @click="addCommet(index, item)">标记</span>  -->
+                  step{{i+1}}: {{step.message}}
+                </li>
+              </ul> 
+            </el-collapse-item>
+          </div>
+          
         </el-collapse>
       </el-col>
       <el-col :span="16" class="code-container">
@@ -74,179 +81,206 @@
 </template>
 
 <script>
-import { codemirror } from 'vue-codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/clike/clike.js'
+import { codemirror } from "vue-codemirror";
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/clike/clike.js";
 // import 'codemirror/theme/base16-light.css'
 export default {
-  name: 'WkCode',
-  data () {
+  name: "WkCode",
+  data() {
     return {
-      msg: '代码错误展示页',
-      code: '',
-      commentType: '1',
+      msg: "代码错误展示页",
+      code: "",
+      commentType: "1",
       commetShow: false,
-      commet: '',
-      activeName: '',
+      commet: "",
+      activeName: "",
       currentIndex: 0,
-      filename: '',
+      filename: "",
       run_id: 0,
       bug_id: 0,
       bugList: [],
       formInline: {
-        reportType: '',
-        reportBug: ''
+        reportType: "",
+        reportBug: ""
       },
       cmOptions: {
         tabSize: 4,
-        height: '400px',
-        mode: 'text/x-csrc',
-        theme: 'default',
+        height: "400px",
+        mode: "text/x-csrc",
+        theme: "default",
         lineNumbers: true,
         line: true,
         readOnly: true,
         viewportMargin: 20,
-        gutters: ['CodeMirror-linenumbers', 'breakpoints']
+        gutters: ["CodeMirror-linenumbers", "breakpoints"]
       }
-    }
+    };
   },
   components: {
     codemirror
   },
   computed: {
     codemirror() {
-      return this.$refs.cm.codemirror
+      return this.$refs.cm.codemirror;
     }
   },
   watch: {
-    'commetShow'(val) {
-      if(!val) {
-        this.commet = ''
+    commetShow(val) {
+      if (!val) {
+        this.commet = "";
       }
     }
   },
   mounted() {
-    this.run_id = this.$route.query.run_id
-    this.bug_id = this.$route.query.bug_id
-    this.loadBugs()
+    this.run_id = this.$route.query.run_id;
+    this.bug_id = this.$route.query.bug_id;
+    this.loadBugs();
   },
   methods: {
     onCmReady(cm) {
-      cm.setSize('auto', '560px')
+      cm.setSize("auto", "560px");
     },
     bugClick(index, item) {
-      this.currentIndex = index
-      var lineNumber = item.line - 1
-      this.codemirror.clearGutter('breakpoints')
-      this.codemirror.setGutterMarker(lineNumber, 'breakpoints', this.makeMarker(lineNumber))
-      var brekpoints = document.getElementsByClassName('code-brekpoints')[0]
-      brekpoints.parentNode.classList.add('breakpoint')
-      
-      this.clearWidget()
-      this.codemirror.addWidget({line:lineNumber}, this.makeMsgMarker(item.message), true)
+      this.currentIndex = index;
+      var lineNumber = item.line - 1;
+      this.codemirror.clearGutter("breakpoints");
+      this.codemirror.setGutterMarker(
+        lineNumber,
+        "breakpoints",
+        this.makeMarker(lineNumber)
+      );
+      var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
+      brekpoints.parentNode.classList.add("breakpoint");
+      this.clearWidget();
+      // this.codemirror.addWidget(
+      //   { line: lineNumber },
+      //   this.makeMsgMarker(item.message),
+      //   true
+      // );
+      this.msgMarker(lineNumber, item.message)
+    },
+    stepClick(i, step) {
+      var lineNumber = step.line - 1;
+      this.codemirror.clearGutter("breakpoints");
+      this.codemirror.setGutterMarker(
+        lineNumber,
+        "breakpoints",
+        this.makeMarker(lineNumber)
+      );
+      var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
+      brekpoints.parentNode.classList.add("breakpoint");
+      this.clearWidget();
+      this.msgMarker(lineNumber, step.message)
+    },
+    msgMarker(lineNumber, msg) {
+      var pNode = document.getElementsByClassName('CodeMirror-code')[0]
+      pNode.insertBefore(this.makeMsgMarker(msg), pNode.childNodes[lineNumber+1])
     },
     clearWidget() {
-      var widgets = document.getElementsByClassName('code-message')
-      if(widgets.length > 0) {
-        for(let i=0; i<widgets.length; i++) {
-          widgets[i].parentNode.removeChild(widgets[i])
+      var widgets = document.getElementsByClassName("code-message");
+      if (widgets.length > 0) {
+        for (let i = 0; i < widgets.length; i++) {
+          widgets[i].parentNode.removeChild(widgets[i]);
         }
       }
     },
     makeMarker(lineNumber) {
-      var marker = document.createElement('div')
-      marker.className = 'code-brekpoints CodeMirror-linenumber'
-      marker.innerHTML = lineNumber + 1
-      return marker
+      var marker = document.createElement("div");
+      marker.className = "code-brekpoints CodeMirror-linenumber";
+      marker.innerHTML = lineNumber + 1;
+      return marker;
     },
     makeMsgMarker(msg) {
-      var marker = document.createElement('div')
-      marker.className = 'code-message'
-      marker.style.color = "white"
-      marker.innerHTML = msg
-      return marker
+      var marker = document.createElement("div");
+      marker.className = "code-message";
+      // marker.style.color = "white";
+      marker.innerHTML = msg;
+      return marker;
     },
     addCommet() {
-      this.commetShow = true
+      this.commetShow = true;
     },
     loadBugs() {
-      var that = this
+      var that = this;
       var data = {
         run_id: that.run_id,
         bug_id: that.bug_id,
         bug_num: 10,
-        token: that.$cookie.get('wk_token'),
-        cmd: 'report'
-      }
-      that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        if(res.data) {
-          this.filename = res.data[0].file_name
-          this.bug_id = res.data[0].bug_id
-          this.bugList = res.data
-          this.loadfile()
-        }        
-      })
+        token: that.$cookie.get("wk_token"),
+        cmd: "report"
+      };
+      that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
+        if (res.data) {
+          this.filename = res.data[0].file_name;
+          this.bug_id = res.data[0].bug_id;
+          this.bugList = res.data;
+          this.loadfile();
+        }
+      });
     },
     loadfile() {
-      var that = this
+      var that = this;
       var data = {
-        cmd: 'request_file',
+        cmd: "request_file",
         file_name: that.filename,
-        token: that.$cookie.get('wk_token')
-      }
-      that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        that.code = res.data.file_content + '\r\n\r\n'
-      })
+        token: that.$cookie.get("wk_token")
+      };
+      that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
+        that.code = res.data.file_content + "\r\n\r\n";
+      });
     },
     saveCommet() {
-      if(this.commet.length > 0) {
-        this.mark()
-      }else {
+      if (this.commet.length > 0) {
+        this.mark();
+      } else {
         this.$message({
-           showClose: true,
-            message: '请输入后再保存',
-            type: 'warning'
-        })
+          showClose: true,
+          message: "请输入后再保存",
+          type: "warning"
+        });
       }
     },
     mark() {
-      var that = this
+      var that = this;
       var data = {
-        cmd: 'report_markbug',
+        cmd: "report_markbug",
         run_id: that.run_id,
         bug_id: that.bug_id,
         comment: this.commet,
         bugtype: 0,
-        token: that.$cookie.get('wk_token')
-      }
-      that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
-        if(res.data && res.data.result == '0') {
+        token: that.$cookie.get("wk_token")
+      };
+      that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
+        if (res.data && res.data.result == "0") {
           this.$message({
-           showClose: true,
-            message: '保存成功',
-            type: 'success'
-          })
-          this.commetShow = false
-        }else {
+            showClose: true,
+            message: "保存成功",
+            type: "success"
+          });
+          this.commetShow = false;
+        } else {
           this.$message({
-           showClose: true,
-            message: '保存失败，请重试',
-            type: 'warning'
-          })
+            showClose: true,
+            message: "保存失败，请重试",
+            type: "warning"
+          });
         }
-      })
+      });
     },
-    onSubmit() {
-    }
+    rightClick(item) {
+      this.commetShow = true;
+    },
+    onSubmit() {},
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
 $minHeight: 600px;
-.searchForm{
-  margin-top: 5px ;
+.searchForm {
+  margin-top: 5px;
 }
 .commentRadio {
   padding: 0 0 30px 0;
@@ -263,7 +297,7 @@ $minHeight: 600px;
 .bug-list {
   height: $minHeight;
   background: $whiteBackground;
-  border: 1px solid $BlackBackground ;
+  border: 1px solid $BlackBackground;
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 20px 0;
@@ -271,7 +305,7 @@ $minHeight: 600px;
     list-style: none;
     margin: 0;
     padding: 0 20px;
-    >li {
+    > li {
       min-height: 30px;
       line-height: 30px;
       padding: 0 1em;
@@ -280,13 +314,13 @@ $minHeight: 600px;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      >span {
-          padding: 3px 4px;
-          font-size: 12px;
-          color: white;
-          background: rgb(217,83,79);
-          cursor: pointer;
-          border-radius: 3px;
+      > span {
+        padding: 3px 4px;
+        font-size: 12px;
+        color: white;
+        background: rgb(217, 83, 79);
+        cursor: pointer;
+        border-radius: 3px;
       }
       &.active {
         // background: #D3DCE6;
@@ -299,8 +333,8 @@ $minHeight: 600px;
   min-height: $minHeight;
   background: white;
 }
-.el-collapse{
-  border-top: 0px ;
+.el-collapse {
+  border-top: 0px;
 }
 </style>
  

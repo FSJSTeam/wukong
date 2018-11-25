@@ -270,15 +270,22 @@ body {
 }
 .el-collapse-item__header {
   padding-left: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .el-dialog__footer {
   text-align: center;
 }
 .code-message {
-  background: #ef2923;
-  border-radius: 4px;
-  box-shadow: 0px 1px 6px 3px #999;
-  padding: 5px 10px;
+  background: rgb(252,243,238);
+  border:1px solid #ef2923;
+  padding: 15px;
+  margin: 10px 0;
+  color:black;
+  // border-radius: 4px;
+  // box-shadow: 0px 1px 6px 3px #999;
+  // padding: 5px 10px;
   z-index: 2;
 }
 .breakpoint {
@@ -353,6 +360,9 @@ body {
 
 .compare-content .el-dialog__header {
     padding: 0px 20px 10px !important;
+}
+.compare-content thead label.el-checkbox {
+  display: none;
 }
 
 /* highchart */

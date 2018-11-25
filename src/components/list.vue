@@ -63,22 +63,27 @@ export default {
       for(let n=0; n<names.length; n++) {
         var data = list.filter(item => item.name = names[n])
         var categories = data.map(item => item.date)
+        var run_ids = data.map(item => item.run_id)
         var unknownList = data.map(item => item.unknown_bug_num)
         var realBugList = data.map(item => item.real_bug_num)
         var falsePositiveList = data.map(item => item.fp_bug_num)
         setTimeout(() => {
-          that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList)
+          that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList, run_ids)
         }, 100)
         
       }
     },
-    setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList) {
+    setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList, run_ids) {
+      var that = this
       var chart = Highcharts.chart(chartContainerId, {
         chart: {
           type: 'column'
         },
         title: {
           text: 'Every RUN\'S BUGS OF PROJECT'
+        },
+        credits: {
+          enabled: false
         },
         subtitle: {
           //text: 'SOURSE: '+ name
@@ -87,7 +92,8 @@ export default {
           enabled: false
         },
         xAxis: {
-          categories
+          categories,
+          
         },
         yAxis: {
           min: 0,
@@ -130,19 +136,31 @@ export default {
                 // 如果不需要数据标签阴影，可以将 textOutline 设置为 'none'
                 textOutline: 'none'
               }
+            },
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function(e) {
+                  var run_id = this.series.options.id[event.point.x]
+                  that.$router.push({name: 'report', query: {run_id}})
+                }
+              }
             }
           }
         },
         series: [{
           name: 'UNKNOWN',
           data: unknownList,
+          id: run_ids,
           color: 'rgb(244,92,91)'
         }, {
           name: 'FALSE POSITIVE',
+          id: run_ids,
           data: falsePositiveList,
           color: 'rgb(33,195,146)'
         }, {
           name: 'REAL BUG',
+          id: run_ids,
           data: realBugList,
           color: 'rgb(72,121,223)'
         }]

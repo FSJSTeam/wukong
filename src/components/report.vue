@@ -112,6 +112,9 @@ export default {
           plotShadow: false,
           type: 'pie'
         },
+        credits: {
+          enabled: false
+        },
         exporting: {
         enabled: true,
           buttons: {
@@ -129,9 +132,18 @@ export default {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
+          column: {
+            cursor: 'pointer',
+            point: {
+              events: {
+                click: function(e) {
+                  console.log(e)
+                }
+              }
+            }
+          },
           pie: {
             allowPointSelect: true,
-            cursor: 'pointer',
             dataLabels: {
               enabled: true,
               format: '<b>{point.name}</b>: {point.percentage:.1f} %',

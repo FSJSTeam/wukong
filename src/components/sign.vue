@@ -90,6 +90,7 @@ export default {
 								message: '注册成功,请登录',
 								type: 'success'
 							});
+							that.$router.push({path: '/login'})
 						}else {
 							// 注册失败		
 							that.alertMsg = '注册失败,请重试'
