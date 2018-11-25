@@ -2,16 +2,17 @@ html{
 	height: 100% ;
 	  }
   
-  .login{
+ 
+	.login{
 	position: absolute; ;
 	top: 0 ;
 	left: 0 ;
 	bottom: 0 ;
 	width: 100% ;
 	height: 100% ;
-	background: linear-gradient(#f6a742, #fe2922) no-repeat;
+	background-image: url(../../static/images/bg-login.png);
+	background-repeat: repeat-x;
 	}
-  
   .login-main{
 	position: absolute ;
 	top: 50% ;
