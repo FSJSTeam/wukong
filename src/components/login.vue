@@ -111,11 +111,11 @@ export default {
 					this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
 						if(res.data && res.data.result == 0) {
 							// 登录成功
-							that.$message({
-								showClose: true,
-								message: '登录成功',
-								type: 'success'
-							});
+							// that.$message({
+							// 	showClose: true,
+							// 	message: '登录成功',
+							// 	type: 'success'
+							// });
 							that.$cookie.set('wk_token', res.data.token, 8)
 							that.$cookie.set('wk_username', data.username, 8)
 							that.$router.push({name: 'list'})
