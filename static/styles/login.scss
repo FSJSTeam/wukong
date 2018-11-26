@@ -63,6 +63,7 @@ html{
   .el-alert__title,
   .el-alert__icon{
 	  font-size: $fontSize22 ;
+	  line-height: 3rem;
   }
   
   .el-alert__closebtn{
@@ -126,7 +127,13 @@ html{
   .el-button+.el-button{
 	  margin-left: 0px ;
   }
-  
+.el-alert__icon {
+	float: left;
+	line-height: 3rem;
+  }
+.el-alert__content {
+	float: left;
+  }
  
 .login-form .el-button:hover,
 .login-form .el-button:active,

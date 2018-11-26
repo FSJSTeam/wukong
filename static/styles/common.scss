@@ -35,7 +35,9 @@ html{
   font-size: 14px ;
   font-family: Microsoft YaHei, Arial;
 }
-
+.el-button, .el-input__inner, .el-select  {
+  font-family: Microsoft YaHei, Arial;
+}
 table{
   border-spacing: 0px ;
 }
@@ -200,6 +202,7 @@ body {
     color:#cc0000;
 }
 **/
+
 .el-input__inner{
   height: 48px ;
   line-height: 48px ;
