@@ -5,7 +5,8 @@
         <el-button size="medium" @click="compare">比较 <i class="el-icon-arrow-right"></i></el-button>
       </el-col>
       <el-col :span="24">
-        <el-table :data="data" border ref="multipleTable" @row-click="handleDetail"  @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" @selection-change="handleSelectionChange" >
+        <el-table :data="data" border ref="multipleTable" @row-click="handleDetail"  @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" 
+        @selection-change="handleSelectionChange" >
           <el-table-column type="selection" width="65"></el-table-column>
           <el-table-column sortable prop="run_id" label="Run ID"></el-table-column>
           <el-table-column sortable prop="name" label="Name"></el-table-column>
@@ -20,12 +21,30 @@
       <p class="rtnBtn">
         <el-button size="medium" @click="result_show = false"><i class="el-icon-arrow-left"></i>返回 </el-button>
       </p>
-      <el-table :data="compareData" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter">
-        <el-table-column property="run_id" label="Run ID"></el-table-column>
-        <el-table-column property="bug_id" label="Bug ID"></el-table-column>
+      <table class="bugCompareTable">
+        <tr>
+          <th>Run1</th>
+          <th>Run2</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td>2 more false positive</td>
+        </tr>
+        <tr>
+          <td>2 more unknown </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2 more real bug </td>
+          <td></td>
+        </tr>
+      </table>
+      <!-- <el-table :data="compareData" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter">
+        <el-table-column property="run_id" label="Run1:"></el-table-column>
+        <el-table-column property="bug_id" label="Bug2:"></el-table-column>
         <el-table-column property="file_path" label="file Path"></el-table-column>
-        <el-table-column property="line" label="Line"></el-table-column>
-      </el-table>
+        <el-table-column property="line" label="Line"></el-table-column> 
+      </el-table>-->
     </el-dialog>
   </div>
 </template>
@@ -81,10 +100,18 @@ export default {
       })
     },
     handleSelectionChange(val) {
+      if(val.length > 2) {
+        this.$message({
+          type: 'warning',
+          showClose: true,
+          message: '请选择两条记录进行对比'
+        })
+      }
       this.multipleSelection = val
+      
     },
     handleDetail(row) {
-      this.$router.push({name: 'report', query: {run_id: row.run_id}})
+      // this.$router.push({name: 'report', query: {run_id: row.run_id}})
     },
     compare() {
       var data = this.multipleSelection;
@@ -126,10 +153,48 @@ export default {
 
 <style lang="scss" scoped>
 @import "~static/styles/common";
+
+$borderColor: rgb(235, 238, 245);
 .btn-row {
   margin: 5px 0px 20px 0px ;
 }
-
+.bugCompareTable {
+  width:100%;
+}
+.bugCompareTable tr:hover td {
+  background: #fff9f9;
+}
+.bugCompareTable tr:hover td {
+  border: 1px solid #cc0000 !important;
+}
+.bugCompareTable tr:hover td:first-child {
+  border-right: 0 !important;
+  border-radius: 5px 0 0 5px;
+}
+.bugCompareTable tr:hover td:last-child {
+  border-left: 0 !important;
+  border-radius: 0 5px 5px 0;
+}
+.bugCompareTable th {
+  text-align: left;
+}
+.bugCompareTable td {
+  text-align: center;
+  color: #272727;
+}
+.bugCompareTable td, th {
+  padding: 15px 10px;
+}
+.bugCompareTable tr td {
+  border:1px solid $borderColor;
+  border-bottom:0;
+}
+.bugCompareTable tr td:first-child {
+  border-right:0;
+}
+.bugCompareTable tr:last-child td {
+  border-bottom:1px solid $borderColor;
+}
 .rtnBtn {
   margin: 0;
   padding-bottom: 10px; 

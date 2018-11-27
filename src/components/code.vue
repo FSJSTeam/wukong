@@ -31,22 +31,29 @@
           </li>
         </ol> -->
         <el-collapse v-model="activeName" accordion>
-          <div v-for="(item, index) in bugList" :name="index" :key="index" @click="bugClick(index, item)">
-            <el-collapse-item  :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
+          <div v-for="(item, index) in bugList" :name="index" :key="index"
+          @click="bugClick(index, item)"
+          @contextmenu.prevent="rightClick">
+            <el-collapse-item :name="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
+            <template slot="title">
+              <el-checkbox v-model="item.isCheck"  @change="checkBugs(index,item)"></el-checkbox>
+              [ Line {{item.line}} ]  {{item.message}}
+            </template>
               <ul>
                 <li v-for="(step, i) in item.steps" 
                 :key="i"
-                @click.stop="stepClick(i, step)" 
-                @contextmenu.prevent="rightClick(i, step)"
-                @dblclick="addCommet(i, step)">
+                @click.stop="stepClick(i, step)">
                   <!-- <span @click="addCommet(index, item)">标记</span>  -->
                   step{{i+1}}: {{step.message}}
                 </li>
               </ul> 
             </el-collapse-item>
-          </div>
-          
+          </div>        
         </el-collapse>
+        <p style="padding-left:20px;">
+          <el-button @click="muiltmark">标记</el-button>
+        </p>
+        
       </el-col>
       <el-col :span="16" class="code-container">
         <p class="code-title" v-text="filename"></p>
@@ -100,6 +107,7 @@ export default {
       run_id: 0,
       bug_id: 0,
       bugList: [],
+      selectedIds: [],
       formInline: {
         reportType: "",
         reportBug: ""
@@ -214,7 +222,11 @@ export default {
         if (res.data) {
           this.filename = res.data[0].file_name;
           this.bug_id = res.data[0].bug_id;
-          this.bugList = res.data;
+          this.bugList = res.data
+          this.bugList = this.bugList.map(item => {
+            item.isCheck = false
+            return item
+          })
           this.loadfile();
         }
       });
@@ -268,8 +280,20 @@ export default {
         }
       });
     },
-    rightClick(item) {
-      this.commetShow = true;
+    rightClick(event) {
+      var el1 = event.currentTarget;
+      var targetClass = event.target.classList[0];
+      console.log(el1, targetClass)
+      if('el-collapse-item__header' == targetClass){
+        this.commetShow = true
+      }        
+    },
+    muiltmark() {
+      this.commetShow = true
+    },
+    checkBugs(index, item) {
+      console.log(item)     
+      
     },
     onSubmit() {},
   }
