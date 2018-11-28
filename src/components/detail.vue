@@ -5,18 +5,18 @@
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
           <el-form-item label="null-ptr bug">
-            <el-select v-model="formInline.reportType" placeholder="please selected">
+            <el-select v-model="formInline.reportType" @change="reportTypeChange" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
-              <el-option label="FalsePositive" value="FalsePositive"></el-option>
+              <el-option label="FalsePositive" value="false positive"></el-option>
               <el-option label="Unknown" value="Unknown"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="">
             <el-select v-model="formInline.reportBug" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="True" value="True"></el-option>
-              <el-option label="False" value="False"></el-option>
+              <el-option label="True" value="1"></el-option>
+              <el-option label="False" value="0"></el-option>
             </el-select>
           </el-form-item>
           <!-- <el-form-item>
@@ -25,7 +25,7 @@
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="bugData" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="bugdata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="file_name" label="File"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
@@ -56,21 +56,21 @@
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="RealBug"></el-option>
-              <el-option label="FalsePositive" value="FalsePositive"></el-option>
+              <el-option label="FalsePositive" value="false positive"></el-option>
               <el-option label="Unknown" value="Unknown"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="">
             <el-select v-model="formInline.reportBug" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="True" value="True"></el-option>
-              <el-option label="False" value="False"></el-option>
+              <el-option label="True" value="1"></el-option>
+              <el-option label="False" value="0"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="filebugData" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="filedata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
           <el-table-column sortable prop="bug_type" label="Bug Type"></el-table-column>
@@ -105,8 +105,8 @@ export default {
       currentPage: 1,
       pageSize: 10,
       formInline: {
-        reportType: '',
-        reportBug: '',
+        reportType: 'All',
+        reportBug: 'All',
         run_id: 0,
         bug_num: 0,
         _id: 0,
@@ -119,6 +119,44 @@ export default {
   computed: {
     'bugshow'() {
       return this.type ==  'bug' ? true : false
+    },
+    'bugdata'() {
+      var type = this.formInline.reportType
+      var comment = this.formInline.reportBug
+      return this.bugData.filter(item => {
+          if (type == 'All') {
+            if(comment == 'All') {
+              return item
+            }else {
+              return (item.comment.length > 0) == comment
+            }
+          }else {
+            if(comment == 'All') {
+              return item.report_type == type
+            }else {
+              return (item.comment.length > 0) == comment && item.report_type == type
+            }
+          }
+      })
+    },
+    'filedata'() {
+      var type = this.formInline.reportType
+      var comment = this.formInline.reportBug
+      return this.filebugData.filter(item => {
+          if (type == 'All') {
+            if(comment == 'All') {
+              return item
+            }else {
+              return (item.comment.length > 0) == comment
+            }
+          }else {
+            if(comment == 'All') {
+              return item.report_type == type
+            }else {
+              return (item.comment.length > 0) == comment && item.report_type == type
+            }
+          }
+      })
     }
   },
   watch: {
@@ -191,6 +229,8 @@ export default {
     },
     onSubmit() {
 
+    },
+    reportTypeChange() {
     }
   }
 }

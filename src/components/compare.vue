@@ -106,8 +106,11 @@ export default {
           showClose: true,
           message: '请选择两条记录进行对比'
         })
+        this.$refs.multipleTable.toggleRowSelection(val[2], false)
+      }else {
+        this.multipleSelection = val
       }
-      this.multipleSelection = val
+      
       
     },
     handleDetail(row) {

@@ -10,16 +10,15 @@
           <el-form-item :label="'Bug List Of'+ filename">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="RealBug" value="RealBug"></el-option>
-              <el-option label="FalsePositive" value="FalsePositive"></el-option>
-              <el-option label="Unknown" value="Unknown"></el-option>
+              <el-option label="RealBug" value="0"></el-option>
+              <el-option label="FalsePositive" value="1"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-select v-model="formInline.reportBug" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="True" value="True"></el-option>
-              <el-option label="False" value="False"></el-option>
+              <el-option label="True" value="1"></el-option>
+              <el-option label="False" value="0"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -31,9 +30,10 @@
           </li>
         </ol> -->
         <el-collapse v-model="activeName" accordion>
-          <div v-for="(item, index) in bugList" :name="index" :key="index"
+          <el-collapse-item v-if="buglist.length == 0" title="暂无数据"></el-collapse-item>
+          <div v-for="(item, index) in buglist" :name="index" :key="index"
           @click="bugClick(index, item)"
-          @contextmenu.prevent="rightClick">
+          @contextmenu.prevent="rightClick">            
             <el-collapse-item :name="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
             <template slot="title">
               <el-checkbox v-model="item.isCheck"  @change="checkBugs(index,item)"></el-checkbox>
@@ -109,8 +109,8 @@ export default {
       bugList: [],
       selectedIds: [],
       formInline: {
-        reportType: "",
-        reportBug: ""
+        reportType: "All",
+        reportBug: "All"
       },
       cmOptions: {
         tabSize: 4,
@@ -131,6 +131,29 @@ export default {
   computed: {
     codemirror() {
       return this.$refs.cm.codemirror;
+    },
+    buglist() {
+      this.bugList = this.bugList.map(item => {
+        item.isCheck = false
+        return item
+      })  
+      var type = this.formInline.reportType
+      var comment = this.formInline.reportBug
+      return this.bugList.filter(item => {
+          if (type == 'All') {
+            if(comment == 'All') {
+              return item
+            }else {
+              return (item.comment.length > 0) == comment
+            }
+          }else {
+            if(comment == 'All') {
+              return item.report_type == type
+            }else {
+              return (item.comment.length > 0) == comment && item.report_type == type
+            }
+          }
+      })
     }
   },
   watch: {
@@ -271,6 +294,10 @@ export default {
             type: "success"
           });
           this.commetShow = false;
+          this.bugList = this.bugList.map(item => {
+            item.isCheck = false
+            return item
+          })
         } else {
           this.$message({
             showClose: true,
@@ -283,16 +310,26 @@ export default {
     rightClick(event) {
       var el1 = event.currentTarget;
       var targetClass = event.target.classList[0];
-      console.log(el1, targetClass)
       if('el-collapse-item__header' == targetClass){
         this.commetShow = true
       }        
     },
     muiltmark() {
-      this.commetShow = true
+      
+      var checkedData = this.bugList.filter(item => {
+        return item.isCheck == true
+      })
+      if(checkedData.length > 0) {
+        this.commetShow = true
+      }else {
+        this.$message({
+          showClose: true,
+          message: "你还未选择bug",
+          type: "warning"
+        });
+      }
     },
-    checkBugs(index, item) {
-      console.log(item)     
+    checkBugs(index, item) {   
       
     },
     onSubmit() {},
