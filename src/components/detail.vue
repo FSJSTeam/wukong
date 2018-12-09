@@ -19,9 +19,13 @@
               <el-option label="False" value="0"></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item> -->
+          <el-form-item label="comment 筛选" style="float: right;margin-right: 0;">
+            <el-input
+              placeholder=""
+              v-model="formInline.commet">
+              <i slot="suffix" @click="commentFixed" class="el-input__icon el-icon-search"></i>
+            </el-input>
+          </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="24">
@@ -107,6 +111,7 @@ export default {
       formInline: {
         reportType: 'All',
         reportBug: 'All',
+        commet: '',
         run_id: 0,
         bug_num: 0,
         _id: 0,
@@ -120,24 +125,29 @@ export default {
     'bugshow'() {
       return this.type ==  'bug' ? true : false
     },
-    'bugdata'() {
-      var type = this.formInline.reportType
-      var comment = this.formInline.reportBug
-      return this.bugData.filter(item => {
-          if (type == 'All') {
-            if(comment == 'All') {
-              return item
+    'bugdata': {
+      get: function() {
+        var type = this.formInline.reportType
+        var comment = this.formInline.reportBug
+        return this.bugData.filter(item => {
+            if (type == 'All') {
+              if(comment == 'All') {
+                return item
+              }else {
+                return (item.comment.length > 0) == comment
+              }
             }else {
-              return (item.comment.length > 0) == comment
+              if(comment == 'All') {
+                return item.report_type == type
+              }else {
+                return (item.comment.length > 0) == comment && item.report_type == type
+              }
             }
-          }else {
-            if(comment == 'All') {
-              return item.report_type == type
-            }else {
-              return (item.comment.length > 0) == comment && item.report_type == type
-            }
-          }
-      })
+        })
+      },
+      set: function() {
+
+      }
     },
     'filedata'() {
       var type = this.formInline.reportType
@@ -185,6 +195,16 @@ export default {
     handleView() {
 
     },
+    commentFixed() {
+      var comment = this.formInline.commet
+      console.log(comment)
+      var data = this.bugData.filter((item) => {
+        return item.comment.indexOf(comment) > -1
+      })
+      console.log(data)
+      this.bugdata = data
+
+    },
     handleCurrentChange(val) {
       this.currentPage = val
       if(this.type == 'file') {  
@@ -213,19 +233,20 @@ export default {
       var data = {
         run_id: this.run_id,
         bugtype: this.bug_type,
-        bug_num: this.currentPage * this.pageSize,
+        // bug_num: this.currentPage * this.pageSize,
         token: that.$cookie.get('wk_token'),
         cmd: 'detail_bugtype'
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
         if(res.data) {
           that.bugData = Array.isArray(res.data)? res.data: [res.data]
+          this.bugdata = this.bugData
         }
       })
     },
     handleDetail(row) {
       var type = this.type
-      this.$router.push({name: 'code', query: {type, run_id: this.run_id, bug_id: row.bug_id, bug_num: this.bug_num}})
+      this.$router.push({name: 'code', query: {type, run_id: this.run_id, bug_id: row.bug_id, file_name:row.file_name}})
     },
     onSubmit() {
 

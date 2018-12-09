@@ -64,9 +64,9 @@ export default {
         var data = list.filter(item => item.name = names[n])
         var categories = data.map(item => item.date)
         var run_ids = data.map(item => item.run_id)
-        var unknownList = data.map(item => item.unknown_bug_num)
-        var realBugList = data.map(item => item.real_bug_num)
-        var falsePositiveList = data.map(item => item.fp_bug_num)
+        var unknownList = data.map(item => parseInt(item.unknown_bug_num))
+        var realBugList = data.map(item => parseInt(item.real_bug_num))
+        var falsePositiveList = data.map(item => parseInt(item.fp_bug_num))
         setTimeout(() => {
           that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList, run_ids)
         }, 100)
