@@ -23,8 +23,13 @@ const service = axios.create({
   return res
  }, err => {
   if(err.response.status == '401') {
-    console.log(401)
     router.push('/login')
+  }
+  if(err.response.status == '500') {
+    ElementUI.Message({
+      message: '服务器异常，请重试',
+      type: 'error'
+    })
   }
  })
  Vue.prototype.$ajax = service
