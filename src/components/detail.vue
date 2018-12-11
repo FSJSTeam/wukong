@@ -7,9 +7,9 @@
           <el-form-item label="null-ptr bug">
             <el-select v-model="formInline.reportType" @change="reportTypeChange" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="RealBug" value="RealBug"></el-option>
+              <el-option label="RealBug" value="real bug"></el-option>
               <el-option label="FalsePositive" value="false positive"></el-option>
-              <el-option label="Unknown" value="Unknown"></el-option>
+              <el-option label="Unknown" value="unknown"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="">
@@ -23,7 +23,7 @@
             <el-input
               placeholder=""
               v-model="formInline.commet">
-              <i slot="suffix" @click="commentFixed" class="el-input__icon el-icon-search"></i>
+              <i slot="suffix" @click="commentFixed" class="el-input__icon el-icon-close"></i>
             </el-input>
           </el-form-item>
         </el-form>
@@ -59,9 +59,9 @@
           <el-form-item label="null-ptr bug">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="RealBug" value="RealBug"></el-option>
+              <el-option label="RealBug" value="real bug"></el-option>
               <el-option label="FalsePositive" value="false positive"></el-option>
-              <el-option label="Unknown" value="Unknown"></el-option>
+              <el-option label="Unknown" value="unknown"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="">
@@ -70,6 +70,13 @@
               <el-option label="True" value="1"></el-option>
               <el-option label="False" value="0"></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="comment 筛选" style="float: right;margin-right: 0;">
+            <el-input
+              placeholder=""
+              v-model="formInline.commet">
+              <i slot="suffix" @click="commentFixed" class="el-input__icon el-icon-close"></i>
+            </el-input>
           </el-form-item>
         </el-form>
       </el-col>
@@ -129,18 +136,19 @@ export default {
       get: function() {
         var type = this.formInline.reportType
         var comment = this.formInline.reportBug
+        var comments = this.formInline.commet
         return this.bugData.filter(item => {
             if (type == 'All') {
               if(comment == 'All') {
-                return item
+                return item && item.comment.indexOf(comments) > -1
               }else {
-                return (item.comment.length > 0) == comment
+                return (item.comment.length > 0) == comment && item.comment.indexOf(comments) > -1
               }
             }else {
               if(comment == 'All') {
-                return item.report_type == type
+                return item.report_type == type && item.comment.indexOf(comments) > -1
               }else {
-                return (item.comment.length > 0) == comment && item.report_type == type
+                return (item.comment.length > 0) == comment && item.report_type == type && item.comment.indexOf(comments) > -1
               }
             }
         })
@@ -152,18 +160,19 @@ export default {
     'filedata'() {
       var type = this.formInline.reportType
       var comment = this.formInline.reportBug
+      var comments = this.formInline.commet
       return this.filebugData.filter(item => {
           if (type == 'All') {
             if(comment == 'All') {
-              return item
+              return item && item.comment.indexOf(comments) > -1
             }else {
-              return (item.comment.length > 0) == comment
+              return (item.comment.length > 0) == comment && item.comment.indexOf(comments) > -1
             }
           }else {
             if(comment == 'All') {
-              return item.report_type == type
+              return item.report_type == type && item.comment.indexOf(comments) > -1
             }else {
-              return (item.comment.length > 0) == comment && item.report_type == type
+              return (item.comment.length > 0) == comment && item.report_type == type && item.comment.indexOf(comments) > -1
             }
           }
       })
@@ -196,14 +205,7 @@ export default {
 
     },
     commentFixed() {
-      var comment = this.formInline.commet
-      console.log(comment)
-      var data = this.bugData.filter((item) => {
-        return item.comment.indexOf(comment) > -1
-      })
-      console.log(data)
-      this.bugdata = data
-
+      this.formInline.commet = ''
     },
     handleCurrentChange(val) {
       this.currentPage = val
@@ -218,7 +220,7 @@ export default {
       var data = {
         run_id: this.run_id,
         file_id: this._id,
-        bug_num: this.currentPage * this.pageSize,
+        // bug_num: this.currentPage * this.pageSize,
         token: that.$cookie.get('wk_token'),
         cmd: 'detail_file'
       }
