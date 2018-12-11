@@ -19,6 +19,14 @@ const service = axios.create({
   },
   // transformRequest: data => qs.stringify(data)
  })
+ service.interceptors.response.use(res => {
+  return res
+ }, err => {
+  if(err.response.status == '401') {
+    console.log(401)
+    router.push('/login')
+  }
+ })
  Vue.prototype.$ajax = service
 
  router.beforeEach((to, from, next) => {
