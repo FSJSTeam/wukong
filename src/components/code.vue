@@ -237,7 +237,7 @@ export default {
       var data = {
         run_id: that.run_id,
         // bug_id: that.bug_id,
-        file_id:this.$route.query.file_name,
+        bug_id:this.$route.query.bug_id,
         // bug_num: 10,
         token: that.$cookie.get("wk_token"),
         cmd: "report"
