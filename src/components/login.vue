@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
 export default {
   name: 'WkLogin',
   data() {
@@ -106,7 +107,9 @@ export default {
       login() {
 				if(this.validate()) {
 					var that = this
-					var data = this.form
+					var data = {}
+					data.username = this.form.username
+					data.password = md5(this.form.password)
 					data.cmd = 'login'
 					this.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
 						if(res.data && res.data.result == 0) {
@@ -120,8 +123,12 @@ export default {
 							that.$cookie.set('wk_username', data.username, 8)
 							that.$router.push({name: 'list'})
 						}else {
+							this.alertMsg = '登录失败'
 							that.loginError = true
 						}
+					}).catch(err => {
+						this.alertMsg = '登录失败'
+						that.loginError = true
 					})
 				}				
       }
