@@ -10,8 +10,9 @@
           <el-form-item :label="'Bug List Of'+ filename">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
-              <el-option label="RealBug" value="0"></el-option>
-              <el-option label="FalsePositive" value="1"></el-option>
+              <el-option label="RealBug" value="real bug"></el-option>
+              <el-option label="FalsePositive" value="false positive"></el-option>
+              <el-option label="Unknown" value="unknown"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
