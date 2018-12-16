@@ -342,6 +342,9 @@ export default {
 <style lang="scss" scoped>
 @import "~static/styles/common";
 $minHeight: 600px;
+.el-button+.el-button{
+  margin-left: 60px ;
+}
 .searchForm {
   margin-top: 5px;
 }

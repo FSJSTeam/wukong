@@ -1,4 +1,4 @@
-$headerHeight: 8rem;
+$headerHeight: 100px;
 $footerHeight: 5rem;
 
 /* Font Size Setting */
@@ -68,7 +68,7 @@ body {
 }
 
 .wk-content{
-  padding: 20px 35px ;
+  padding: 15px 35px ;
   min-height: 700px ;
 }
 @media screen and (max-width: 1366px) {
@@ -163,7 +163,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  line-height: 7rem ;
+  line-height: 98px ;
   background: #fff ;
   border-top: 1px solid #d7e0f1 ;
   border-bottom: 1px solid #d7e0f1 ;
@@ -261,6 +261,10 @@ body {
 }
 
 /* form */
+.el-form-item{
+  margin-bottom: 15px ;
+}
+
 .el-form-item__label{
   color: $fontColorBlack ;
   line-height: 48px ;
