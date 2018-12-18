@@ -69,6 +69,7 @@ export default {
           if(that.table1data.length > 0) {
             // 计算总bug数
             that.table1data.map(item => {
+              item.filename = item.filename !== null ? item.filename : 'null'
               item.bug_number = item.real_bug_num + item.fp_bug_num + item.unknown_bug_num
               return item
             })

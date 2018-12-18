@@ -41,6 +41,7 @@ export default {
       }
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
         if(res.data && res.data.length >0) {
+          console.log(res)
           that.handleData(res.data)
         }else {
           that.$message({
@@ -51,7 +52,8 @@ export default {
         }
       })
     },
-    handleData(list) {
+    handleData(resData) {
+      var list = resData
       var that = this
       var names = []
       for(var i=0; i<list.length; i++) {
@@ -61,7 +63,7 @@ export default {
       }
       that.names = names
       for(let n=0; n<names.length; n++) {
-        var data = list.filter(item => item.name = names[n])
+        var data = list.filter(item => item.name == names[n])
         var categories = data.map(item => item.date)
         var run_ids = data.map(item => item.run_id)
         var unknownList = data.map(item => parseInt(item.unknown_bug_num))
@@ -69,8 +71,7 @@ export default {
         var falsePositiveList = data.map(item => parseInt(item.fp_bug_num))
         setTimeout(() => {
           that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList, run_ids)
-        }, 100)
-        
+        }, 100)        
       }
     },
     setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList, run_ids) {

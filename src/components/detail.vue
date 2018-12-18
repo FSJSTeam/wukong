@@ -227,6 +227,12 @@ export default {
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
         if(res.data) {
           that.filebugData = Array.isArray(res.data)? res.data: [res.data]
+          if(that.filebugData.length > 0) {
+            that.filebugData.map(item => {
+              item.comment = item.comment == '' ? 'null' : comment
+              return item
+            })
+          }
         }
       })
     },
@@ -242,6 +248,13 @@ export default {
       that.$ajax.post('/', "msg="+JSON.stringify(data) ).then(res => {
         if(res.data) {
           that.bugData = Array.isArray(res.data)? res.data: [res.data]
+          if(that.bugData.length > 0) {
+            that.bugData.map(item => {
+              item.file_name = item.file_name == null ? 'null': item.file_name
+              item.comment = item.comment == '' ? 'null' : comment
+              return item
+            })
+          }
           this.bugdata = this.bugData
         }
       })
