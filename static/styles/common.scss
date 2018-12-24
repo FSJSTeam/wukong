@@ -301,6 +301,9 @@ body {
 }
 .code-brekpoints {
   //background-color: green;
+  position: relative;
+  left: -28px;
+  top: 0;
   background-color:rgb(255,151,142);
 }
 .CodeMirror-linenumber {

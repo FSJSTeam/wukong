@@ -120,9 +120,10 @@ export default {
         theme: "default",
         lineNumbers: true,
         line: true,
+        autofocus: true,
         readOnly: true,
         viewportMargin: 20,
-        gutters: ["CodeMirror-linenumbers", "breakpoints"]
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-linewidget", "breakpoints"]
       }
     };
   },
@@ -174,43 +175,66 @@ export default {
       cm.setSize("auto", "560px");
     },
     bugClick(index, item) {
-      this.currentIndex = index;
-      var lineNumber = item.line - 1;
-      this.codemirror.clearGutter("breakpoints");
-      this.codemirror.setGutterMarker(
-        lineNumber,
-        "breakpoints",
-        this.makeMarker(lineNumber)
-      );
-      var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
-      brekpoints.parentNode.classList.add("breakpoint");
-      this.clearWidget();
+      var that = this;
+      that.currentIndex = index;
+      var lineNumber = item.line - 1; 
+      var data = {
+        cmd: "request_file",
+        file_name: item.file_name,
+        token: that.$cookie.get("wk_token")
+      };
+      that.clearWidget();
+      that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
+        that.code = res.data.file_content + "\r\n\r\n";
+        that.filename = item.file_name;
+        setTimeout(function() {
+          that.codemirror.scrollIntoView({line: lineNumber});
+          that.codemirror.clearGutter("breakpoints");
+          that.codemirror.setGutterMarker(
+            lineNumber,
+            "breakpoints",
+            that.makeMarker(lineNumber)
+          );
+          
+          that.codemirror.getDoc().addLineWidget(lineNumber, that.makeMsgMarker(item.message), {coverGutter: false})
+        })
+        
+      });
+      // var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
+      // brekpoints.parentNode.classList.add("breakpoint");
+      // that.clearWidget();
       // this.codemirror.addWidget(
       //   { line: lineNumber },
       //   this.makeMsgMarker(item.message),
       //   true
       // );
-      this.msgMarker(lineNumber, item.message)
+      // that.msgMarker(lineNumber, item.message)
     },
     stepClick(i, step) {
+      // this.clearWidget()
       var lineNumber = step.line - 1;
+      this.codemirror.scrollIntoView({line: lineNumber});
       this.codemirror.clearGutter("breakpoints");
+      this.codemirror.clearGutter("CodeMirror-linewidget");
       this.codemirror.setGutterMarker(
         lineNumber,
         "breakpoints",
         this.makeMarker(lineNumber)
       );
-      var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
-      brekpoints.parentNode.classList.add("breakpoint");
-      this.clearWidget();
-      this.msgMarker(lineNumber, step.message)
+      this.codemirror.getDoc().addLineWidget(lineNumber, this.makeMsgMarker(step.message), {above: false})
+      // var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
+      // brekpoints.parentNode.classList.add("breakpoint");
+      // this.clearWidget();
+      // this.msgMarker(lineNumber, step.message)
+
     },
     msgMarker(lineNumber, msg) {
       var pNode = document.getElementsByClassName('CodeMirror-code')[0]
       pNode.insertBefore(this.makeMsgMarker(msg), pNode.childNodes[lineNumber+1])
     },
     clearWidget() {
-      var widgets = document.getElementsByClassName("code-message");
+      // var widgets = document.getElementsByClassName("code-message");
+      var widgets = document.getElementsByClassName("CodeMirror-linewidget");
       if (widgets.length > 0) {
         for (let i = 0; i < widgets.length; i++) {
           widgets[i].parentNode.removeChild(widgets[i]);
@@ -252,19 +276,20 @@ export default {
             item.isCheck = false
             return item
           })
-          this.loadfile();
+          this.loadfile(this.filename);
         }
       });
     },
-    loadfile() {
+    loadfile(filename) {
       var that = this;
       var data = {
         cmd: "request_file",
-        file_name: that.filename,
+        file_name: filename,
         token: that.$cookie.get("wk_token")
       };
       that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
         that.code = res.data.file_content + "\r\n\r\n";
+        that.filename = filename;
       });
     },
     saveCommet() {

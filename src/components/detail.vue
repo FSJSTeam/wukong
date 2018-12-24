@@ -4,7 +4,7 @@
     <el-row v-show="bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="null-ptr bug">
+          <el-form-item :label="name">
             <el-select v-model="formInline.reportType" @change="reportTypeChange" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="real bug"></el-option>
@@ -56,7 +56,7 @@
     <el-row v-show="!bugshow">
       <el-col :span="24">
         <el-form :inline="true" :model="formInline" class="searchForm">
-          <el-form-item label="null-ptr bug">
+          <el-form-item :label="name">
             <el-select v-model="formInline.reportType" placeholder="please selected">
               <el-option label="All" value="All"></el-option>
               <el-option label="RealBug" value="real bug"></el-option>
@@ -110,6 +110,7 @@ export default {
   name: 'WkDetail',
   data () {
     return {
+      name: '',
       msg: '详细报告列表页',
       type: '',
       pageTotal: 0,
@@ -185,6 +186,7 @@ export default {
     this.type = this.$route.query.type
     this.run_id = this.$route.query.run_id
     this.bug_num = this.$route.query.bug_num
+    this.name = this.$route.query.name
     this.pageTotal = parseInt(this.bug_num)
     if(this.type == 'file') {
       this._id = this.$route.query._id   

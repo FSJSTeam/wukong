@@ -62,17 +62,17 @@ export default {
         }
       }
       that.names = names
-      for(let n=0; n<names.length; n++) {
-        var data = list.filter(item => item.name == names[n])
-        var categories = data.map(item => item.date)
-        var run_ids = data.map(item => item.run_id)
-        var unknownList = data.map(item => parseInt(item.unknown_bug_num))
-        var realBugList = data.map(item => parseInt(item.real_bug_num))
-        var falsePositiveList = data.map(item => parseInt(item.fp_bug_num))
-        setTimeout(() => {
-          that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList, run_ids)
-        }, 100)        
-      }
+      setTimeout(() => {
+        for(var n=0; n<names.length; n++) {
+          var data = list.filter(item => item.name == names[n])
+          var categories = data.map(item => item.date)
+          var run_ids = data.map(item => item.run_id)
+          var unknownList = data.map(item => parseInt(item.unknown_bug_num))
+          var realBugList = data.map(item => parseInt(item.real_bug_num))
+          var falsePositiveList = data.map(item => parseInt(item.fp_bug_num))
+            that.setChart('item'+n, names[n], categories, unknownList, realBugList, falsePositiveList, run_ids)    
+        }
+       }, 100)
     },
     setChart(chartContainerId, name, categories, unknownList, realBugList, falsePositiveList, run_ids) {
       var that = this
