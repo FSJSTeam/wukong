@@ -212,16 +212,20 @@ export default {
     },
     stepClick(i, step) {
       // this.clearWidget()
+      var that = this;
+      this.code = this.code + "\r\n";
       var lineNumber = step.line - 1;
       this.codemirror.scrollIntoView({line: lineNumber});
       this.codemirror.clearGutter("breakpoints");
       this.codemirror.clearGutter("CodeMirror-linewidget");
-      this.codemirror.setGutterMarker(
-        lineNumber,
-        "breakpoints",
-        this.makeMarker(lineNumber)
-      );
-      this.codemirror.getDoc().addLineWidget(lineNumber, this.makeMsgMarker(step.message), {above: false})
+      setTimeout(function() {
+        that.codemirror.setGutterMarker(
+          lineNumber,
+          "breakpoints",
+          that.makeMarker(lineNumber)
+        );
+        that.codemirror.getDoc().addLineWidget(lineNumber, that.makeMsgMarker(step.message), {above: false})    
+      },100)
       // var brekpoints = document.getElementsByClassName("code-brekpoints")[0];
       // brekpoints.parentNode.classList.add("breakpoint");
       // this.clearWidget();
