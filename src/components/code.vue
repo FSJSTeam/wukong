@@ -1,5 +1,5 @@
 <template>
-  <div class="wk-content">
+  <div class="wk-content code">
     
     <el-row >
       <el-col :span="24">
@@ -43,7 +43,8 @@
               <ul>
                 <li v-for="(step, i) in item.steps" 
                 :key="i"
-                @click.stop="stepClick(i, step)">
+                :class="activeStep == (index+'-'+i) ? 'activeStep': ''"
+                @click.stop="stepClick(i, step, index)">
                   <!-- <span @click="addCommet(index, item)">标记</span>  -->
                   step{{i+1}}: {{step.message}}
                 </li>
@@ -99,6 +100,7 @@ export default {
     return {
       msg: "代码错误展示页",
       code: "",
+      activeStep: '1',
       commentType: "1",
       commetShow: false,
       commet: "",
@@ -210,7 +212,8 @@ export default {
       // );
       // that.msgMarker(lineNumber, item.message)
     },
-    stepClick(i, step) {
+    stepClick(i, step, index) {
+      this.activeStep = index + '-' + i;
       // this.clearWidget()
       var that = this;
       this.code = this.code + "\r\n";
@@ -431,5 +434,6 @@ $minHeight: 600px;
 .el-collapse {
   border-top: 0px;
 }
+
 </style>
  

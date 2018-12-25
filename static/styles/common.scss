@@ -385,3 +385,12 @@ body {
   background: #fff9f9 !important;
   color: #606266 !important;     
 }
+
+.code .el-collapse-item__header.is-active {
+  background: #fcf3ee;
+  color: #ef2923;
+}
+.code .activeStep {
+  background: #c7efb3;
+  color: #176f17;
+}
