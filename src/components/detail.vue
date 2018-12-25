@@ -29,7 +29,7 @@
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="bugdata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="bugpagedata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="file_name" label="File"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
@@ -81,7 +81,7 @@
         </el-form>
       </el-col>
       <el-col :span="24">
-        <el-table :data="filedata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
+        <el-table :data="filepagedata" border @row-click="handleDetail" @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter" >
           <el-table-column width="80" prop="bug_id" label="bug ID"></el-table-column>
           <el-table-column prop="message" label="Message"></el-table-column>
           <el-table-column sortable prop="bug_type" label="Bug Type"></el-table-column>
@@ -113,9 +113,9 @@ export default {
       name: '',
       msg: '详细报告列表页',
       type: '',
-      pageTotal: 0,
+      // pageTotal: 0,
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 5,
       formInline: {
         reportType: 'All',
         reportBug: 'All',
@@ -130,6 +130,9 @@ export default {
     }
   },
   computed: {
+    'pageTotal'() {
+      return this.filedata.length || this.bugdata.length;
+    },
     'bugshow'() {
       return this.type ==  'bug' ? true : false
     },
@@ -157,6 +160,12 @@ export default {
       set: function() {
 
       }
+    },
+    'filepagedata'() {
+      return this.filedata.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
+    },
+    'bugpagedata'() {
+      return this.bugdata.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
     },
     'filedata'() {
       var type = this.formInline.reportType
@@ -187,7 +196,7 @@ export default {
     this.run_id = this.$route.query.run_id
     this.bug_num = this.$route.query.bug_num
     this.name = this.$route.query.name
-    this.pageTotal = parseInt(this.bug_num)
+    // this.pageTotal = parseInt(this.bug_num)
     if(this.type == 'file') {
       this._id = this.$route.query._id   
       this.loadFileData()   
