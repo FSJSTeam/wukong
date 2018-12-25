@@ -177,6 +177,7 @@ export default {
       cm.setSize("auto", "560px");
     },
     bugClick(index, item) {
+      this.activeStep = '';
       var that = this;
       that.currentIndex = index;
       var lineNumber = item.line - 1; 
