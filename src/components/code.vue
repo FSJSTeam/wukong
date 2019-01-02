@@ -35,7 +35,7 @@
           <div v-for="(item, index) in buglist" :name="index" :key="index"
           @click="bugClick(index, item)"
           @contextmenu.prevent="rightClick">            
-            <el-collapse-item :name="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message">
+            <el-collapse-item :name="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message" >
             <template slot="title">
               <el-checkbox v-model="item.isCheck"  @change="checkBugs(index,item)"></el-checkbox>
               [ Line {{item.line}} ]  {{item.message}}
@@ -191,7 +191,7 @@ export default {
         that.code = res.data.file_content + "\r\n\r\n";
         that.filename = item.file_name;
         setTimeout(function() {
-          that.codemirror.scrollIntoView({line: lineNumber});
+          that.codemirror.scrollIntoView({from: {line:lineNumber}}, 150);
           that.codemirror.clearGutter("breakpoints");
           that.codemirror.setGutterMarker(
             lineNumber,
@@ -199,7 +199,7 @@ export default {
             that.makeMarker(lineNumber)
           );
           
-          that.codemirror.getDoc().addLineWidget(lineNumber, that.makeMsgMarker(item.message), {coverGutter: false})
+          that.codemirror.getDoc().addLineWidget(lineNumber, that.makeMsgMarker(item.message), {coverGutter: false, noHScroll: false})
         })
         
       });
