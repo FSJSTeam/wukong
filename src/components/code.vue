@@ -293,6 +293,7 @@ export default {
           }
           this.$nextTick(function() {
             this.$refs.reff[index].click()
+            this.$refs.reff[index].scrollIntoView(false)
           })
           
           // this.loadfile(this.filename);
