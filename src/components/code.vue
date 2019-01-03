@@ -32,10 +32,10 @@
         </ol> -->
         <el-collapse v-model="activeName" accordion>
           <el-collapse-item v-if="buglist.length == 0" title="暂无数据"></el-collapse-item>
-          <div v-for="(item, index) in buglist" :name="index" :key="index"
+          <div v-for="(item, index) in buglist" :name="index" :key="index" ref="reff"
           @click="bugClick(index, item)"
-          @contextmenu.prevent="rightClick">            
-            <el-collapse-item :name="index" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message" >
+          @contextmenu.prevent="rightClick">
+            <el-collapse-item :name="item.bug_id" :title="'['+ bug_id +'] Line '+item.line+'  '+ item.message" >
             <template slot="title">
               <el-checkbox v-model="item.isCheck"  @change="checkBugs(index,item)"></el-checkbox>
               [ Line {{item.line}} ]  {{item.message}}
@@ -170,6 +170,7 @@ export default {
   mounted() {
     this.run_id = this.$route.query.run_id;
     this.bug_id = this.$route.query.bug_id;
+    this.activeName = this.bug_id;
     this.loadBugs();
   },
   methods: {
@@ -197,8 +198,7 @@ export default {
             lineNumber,
             "breakpoints",
             that.makeMarker(lineNumber)
-          );
-          
+          ); 
           that.codemirror.getDoc().addLineWidget(lineNumber, that.makeMsgMarker(item.message), {coverGutter: false, noHScroll: false})
         })
         
@@ -277,14 +277,25 @@ export default {
       };
       that.$ajax.post("/", "msg=" + JSON.stringify(data)).then(res => {
         if (res.data) {
-          this.filename = res.data[0].file_name;
-          this.bug_id = res.data[0].bug_id;
+          // this.filename = res.data[0].file_name;
+          // this.bug_id = res.data[0].bug_id;
           this.bugList = res.data
           this.bugList = this.bugList.map(item => {
             item.isCheck = false
             return item
           })
-          this.loadfile(this.filename);
+          var index = 0;
+          for(let i in this.bugList) {
+            if(this.bugList[i].bug_id == this.bug_id) {
+              index = i;
+              break;
+            }
+          }
+          this.$nextTick(function() {
+            this.$refs.reff[index].click()
+          })
+          
+          // this.loadfile(this.filename);
         }
       });
     },
