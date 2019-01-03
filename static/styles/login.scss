@@ -62,7 +62,7 @@ html{
   
   .el-alert__title,
   .el-alert__icon{
-	  font-size: $fontSize22 ;
+	  font-size: $fontSize18 ;
 	  line-height: 3rem;
   }
   
@@ -100,7 +100,7 @@ html{
   
   .login-form .el-input__inner{
 	  color: #cc0000 ;
-	  text-align: center;
+	  text-align: left;
 	  font-size: $fontSizeBig ;
 	  height: 4rem ;
 	  line-height: 4rem ;
@@ -182,7 +182,7 @@ html{
 	  }
   
 	  .el-alert__title{
-		  font-size: $fontSizeBig ;
+		  font-size: $fontSizeMedium ;
 	  }
   
 	  .login-form .el-form-item{
@@ -210,3 +210,14 @@ html{
 	  }
   
   }
+
+   .login-form .btn-register{
+   	  color: $fontColorRed ;
+      background-color: $whiteBackground ;
+      border: 1px solid $RedBackground ;
+   }
+
+   .login-form .btn-register:hover{
+   	  color: $fontColorRed ;
+      background-color: #fff9f9 ;
+   }

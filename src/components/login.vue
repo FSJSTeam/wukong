@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-main">
     	<p class="login-logo"><img src="../../static/images/logo-black.png" /></p>
-    	<p class="login-title">先进的静态分析检测工具</p>
+    	<p class="login-title">先进的软件源代码漏洞检测工具</p>
     	<div class="login-alert" v-show="loginError">
 	    	<template>
 			  <el-alert
@@ -15,7 +15,7 @@
     	<div class="login-form">
     		<el-form ref="form" :model="form">
 			  <el-form-item label="用户名">
-			    <el-input v-model="form.username" placeholder="请输入你的邮箱"></el-input>
+			    <el-input v-model="form.username" placeholder="请输入你的用户名"></el-input>
 			  </el-form-item>
 			  <el-form-item label="密码">
 			    <el-input type="password" v-model="form.password" placeholder="请输入你的密码"></el-input>
@@ -23,7 +23,7 @@
     		  <el-form-item>
     			
     			<el-button type="primary" @click="login">登录</el-button>
-    			<el-button type="primary" @click="register">注册</el-button>
+    			<el-button type="primary" class="btn-register" @click="register">注册</el-button>
     		  </el-form-item>
 				<!-- <el-form-item>
 					<p class="tar redirect"><router-link :to="{ name: 'sign'}">去注册>></router-link></p>
